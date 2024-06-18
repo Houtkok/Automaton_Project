@@ -1,12 +1,11 @@
 <?php
 class FiniteStateMachine {
-    // private $numStates;
-    // private $alphabet;
-    // private $transitions;
-    // private $startState;
-    // private $finalStates;
+    private $alphabet;
+    private $transitions;
+    private $startState;
+    private $finalStates;
     
-    // //constructor
+    //constructor
     // public function __construct($numStates, $alphabet, $startState, $finalStates, $transitions) {
     //     $this->numStates = $numStates;
     //     $this->alphabet = $alphabet;
@@ -77,7 +76,8 @@ class FiniteStateMachine {
         return false;
     }
     public function nfaToDfa(NonDeterministicFiniteAutomaton $nfa) {
-        //Intialize DFA
+        if($this->isDFA()){
+            //Intialize DFA
         $dfa = new DeterministicFiniteAutomaton();
         $dfa->startState = $nfa->startState;
         $dfa->alphabet = $nfa->alphabet;
@@ -124,6 +124,8 @@ class FiniteStateMachine {
             }
         }
         return $dfa;
+        }
+        else echo "The FA is aleady a DFA";
     }
     //minize by using Hopcroft algo
     public function minimizeDFA(DeterministicFiniteAutomaton $dfa) {
@@ -198,20 +200,20 @@ class FiniteStateMachine {
     }
 }
 // Example usage:
+require_once "DeterministicFiniteAutomaton.php";
+require_once "NonDeterministicFiniteAutomaton.php";
 // $numStates = 3;
 // $alphabet = [0, 1];
-// $startState = 'A';
+// $startState = ['A'];
 // $finalStates = ['C'];
 // $transitions = [
-//     'A' => ['0' => ['B'], '1' => ['A']],
-//     'B' => ['0' => ['B'], '1' => ['C']],
-//     'C' => ['0' => ['C'], '1' => ['A']]
+//     'A' => ['0' => ['B'], '1' => ['A','C']],
+//     'B' => ['0' => ['B','C'], '1' => ['C']],
+//     'C' => ['0' => ['A'], '1' => ['C']]
 // ];
 
-// $fa = new FA($numStates, $alphabet, $startState, $finalStates, $transitions);
-// echo "FA is " . ($fa->isDFA() ? "DFA" : "NFA") . "<br>"; 
-// $input = "0100";
-// echo "Is Accepted: " . ($fa->isAccepted($input) ? "Yes" : "No");
+
+
 
 
 ?>

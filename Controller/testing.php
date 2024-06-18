@@ -4,7 +4,7 @@ require_once 'FiniteStateMachine.php';
 $dfa = new DeterministicFiniteAutomaton();
 $nfa = new NonDeterministicFiniteAutomaton();
 
-//set dfa
+// set dfa
 // $dfa->setStartState('q0');
 // $dfa->setFinalState(['q2']);
 // $dfa->setAlphabet(['a', 'b']);
@@ -14,15 +14,15 @@ $nfa = new NonDeterministicFiniteAutomaton();
 //     'q2' => ['a' => 'q2', 'b' => 'q0']
 // ]);
 
-//set nfa
-// $nfa->setStartState('q0');
-// $nfa->setFinalState(['q2']);
-// $nfa->setAlphabet(['a', 'b']);
-// $nfa->setTransition([
-//     'q0' => ['a' => ['q1'], 'b' => ['q0']],
-//     'q1' => ['a' => ['q1', 'q2'], 'b' => []],
-//     'q2' => ['a' => ['q2'], 'b' => ['q0']]
-// ]);
+// set nfa
+$nfa->setStartState('q0');
+$nfa->setFinalState(['q2']);
+$nfa->setAlphabet(['a', 'b']);
+$nfa->setTransition([
+    'q0' => ['a' => ['q1'], 'b' => ['q0']],
+    'q1' => ['a' => ['q1', 'q2'], 'b' => []],
+    'q2' => ['a' => ['q2'], 'b' => ['q0']]
+]);
 // $nfa->setStartState('q0');
 // $nfa->setFinalState(['q1']);
 // $nfa->setAlphabet(['a', 'b']);
@@ -38,14 +38,14 @@ $nfa = new NonDeterministicFiniteAutomaton();
 //     'q1' => ['a' => [], 'b' => ['q2']],
 // ]);
 
-//initialize FiniteStateMachine
+// initialize FiniteStateMachine
 $fsm = new FiniteStateMachine();
 
 //test DFA acceptance
 // $input1 = 'ababa';
 // $input2 = 'baaba';
 
-// echo "Testing DFA acceptance:";
+// echo "Testing DFA acceptance:"clea;
 // echo  $dfa->startState ."\n";
 // echo "Testing Final State: ";
 // foreach($dfa->finalStates as $final ){
@@ -95,7 +95,7 @@ foreach($convertedDFA->transitionTable as $state => $trasition){
         echo "[" . $input . " -> " . $nextState . "]". PHP_EOL;
     }
 }
-print_r($convertedDFA);
+//print_r($convertedDFA);
 
 // Minimize DFA
 // $minimizedDFA = $fsm->minimizeDFA($dfa);
