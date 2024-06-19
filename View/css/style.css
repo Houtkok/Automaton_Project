@@ -6,7 +6,23 @@ body {
 header{
     background-color: #365679;
 }
+.state {
+    display: inline-block;
+    background-color: #f0f0f0;
+    padding: 5px 10px;
+    margin: 5px;
+    border-radius: 5px;
+}
 
+.remove-btn {
+    cursor: pointer;
+    color: #555;
+    margin-left: 5px;
+}
+
+.remove-btn:hover {
+    color: red;
+}
 .main-input, .transitions, .features {
     background-color: #fff;
     border: 1px solid #ddd;

@@ -38,16 +38,41 @@ $(document).ready(function () {
 
     // Function to update start state and final states options
     function updateStateOptions(states) {
-        $('#start-state, .final-state-select').empty();
+        $('#start-state, #final-states').empty();
         $('#start-state').append('<option value="">Select start state</option>');
-        $('.final-state-select').append('<option value="">Select final states</option>');
+        $('#final-states').append('<option value="">Select final states</option>');
 
         states.forEach(state => {
             $('#start-state').append(`<option value="${state}">${state}</option>`);
-            $('.final-state-select').append(`<option value="${state}">${state}</option>`);
+            $('#final-states').append(`<option value="${state}">${state}</option>`);
         });
     }
 
     // Initial call to populate the transition table and state options
     updateTransitionTable();
+
+    // Event listener for final states select
+    $('#final-states').on('change', function () {
+        const selectedState = $(this).val();
+        if (selectedState) {
+            addSelectedState(selectedState);
+        }
+        // Reset select value to default after adding
+        $(this).val('');
+    });
+
+    // Function to add selected state to container
+    function addSelectedState(state) {
+        const selectedStatesContainer = $('#selected-state');
+        const existingStates = selectedStatesContainer.find('.state');
+
+        // Check if state already exists
+        if (existingStates.length === 0 || !existingStates.toArray().some(el => $(el).text().trim() === state)) {
+            selectedStatesContainer.append(`<div class="state">${state} <span class="remove-btn">x</span></div>`);
+            // Add remove functionality
+            selectedStatesContainer.find('.remove-btn').off('click').on('click', function () {
+                $(this).parent().remove();
+            });
+        }
+    }
 });

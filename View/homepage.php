@@ -29,15 +29,16 @@
                         <label for="start-state">Start State</label>
                         <select class="form-control" id="start-state">
                             <option value="">Select start state</option>
-                            <!-- Other options -->
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="final-states">Final States</label>
-                        <select class="form-control final-state-select" id="final-states" >
+                        <select class="form-control" id="final-states">
                             <option value="">Select final states</option>
-                            <!-- Other options -->
                         </select>
+                        <div id="selected-state">
+                            <h3>Selected States:</h3>
+                        </div>
                     </div>
                 </section>
             </div>
@@ -59,47 +60,46 @@
         </div>
         <h3>Feature</h3>
         <section class="features">
-                <div class="row">
-                    <div class="col-6">
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <h5 class="card-title">Test if this FA is deterministic or non-deterministic</h5>
-                                <button class="btn btn-secondary">TEST</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <h5 class="card-title">NFA to DFA</h5>
-                                <button class="btn btn-secondary">Convert</button>
-                            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Test if this FA is deterministic or non-deterministic</h5>
+                            <button class="btn btn-secondary">TEST</button>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-6">
-                        <div class="card mb-3" >
-                            <div class="card-body">
-                                <h5 class="card-title">Test if a string is accepted</h5>
-                                <input type="text" class="form-control mb-2" placeholder="Input a string">
-                                <button class="btn btn-secondary">TEST</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <h5 class="card-title">Minimize DFA</h5>
-                                <button class="btn btn-secondary">Minimize</button>
-                            </div>
+                <div class="col-6">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">NFA to DFA</h5>
+                            <button class="btn btn-secondary">Convert</button>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Test if a string is accepted</h5>
+                            <input type="text" class="form-control mb-2" placeholder="Input a string">
+                            <button class="btn btn-secondary">TEST</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Minimize DFA</h5>
+                            <button class="btn btn-secondary">Minimize</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
     </main>
     <footer>
-
     </footer>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
