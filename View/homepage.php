@@ -8,6 +8,22 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
+<style>
+    .state {
+        display: inline-block;
+        background-color: #f0f0f0;
+        padding: 5px 10px;
+        margin: 5px;
+        border-radius: 5px;
+    }
+
+    .remove-btn {
+        cursor: pointer;
+        color: red;
+        margin-left: 5px;
+
+    }
+</style>
 
 <body>
     <header class="bg-#365679; p-2 d-flex justify-content-between align-items-center">
@@ -36,8 +52,9 @@
                         <select class="form-control" id="final-states">
                             <option value="">Select final states</option>
                         </select>
+                        <br>
                         <div id="selected-state">
-                            <h3>Selected States:</h3>
+                            <p>Selected Final States:</p>
                         </div>
                     </div>
                 </section>
