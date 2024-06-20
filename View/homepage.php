@@ -60,6 +60,7 @@
                 </section>
             </div>
             <div class="col-6">
+                <h3>Transition Table</h3>
                 <section class="transitions">
                     <table class="table table-bordered" id="transition-table">
                         <thead>

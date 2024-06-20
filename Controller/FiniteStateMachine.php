@@ -1,21 +1,18 @@
 <?php
-class FiniteStateMachine {
+require_once "DeterministicFiniteAutomaton.php";
+require_once "NonDeterministicFiniteAutomaton.php";
+require_once "Graph.php";
+class FiniteStateMachine
+{
     private $alphabet;
     private $transitions;
     private $startState;
     private $finalStates;
-    
-    //constructor
-    // public function __construct($numStates, $alphabet, $startState, $finalStates, $transitions) {
-    //     $this->numStates = $numStates;
-    //     $this->alphabet = $alphabet;
-    //     $this->startState = $startState;
-    //     $this->finalStates = $finalStates;
-    //     $this->transitions = $transitions;
-    // }
-    
+    private $name;
+
     //check if FA is DFA or NFA 
-    public function isDFA() {
+    public function isDFA()
+    {
         foreach ($this->transitions as $transitionsForState) {
             foreach ($this->alphabet as $input) {
                 if (!isset($transitionsForState[$input]) || count($transitionsForState[$input]) != 1) {
@@ -26,13 +23,14 @@ class FiniteStateMachine {
         return true;
         //implement this base on DFA : one current_state and input can only lead to one next_state 
     }
-    
+
     // check if a string a is accepted or not 
-    public function isAccepted($input) {
+    public function isAccepted($input)
+    {
         //if dfa get check if accepted by dfa
         if ($this->isDFA()) {
             return $this->isAcceptedByDFA($input);
-        } 
+        }
         //else get check if accepted by nfa
         else {
             return $this->isAcceptedByNFA($input);
@@ -40,23 +38,25 @@ class FiniteStateMachine {
     }
 
     //check if accepted by dfa
-    private function isAcceptedByDFA($input) {
+    private function isAcceptedByDFA($input)
+    {
         $currentState = $this->startState;
-        
+
         foreach (str_split($input) as $symbol) {
             if (!isset($this->transitions[$currentState][$symbol])) {
                 return false; // No transition defined for this symbol from the current state
             }
             $currentState = $this->transitions[$currentState][$symbol][0]; // Move to the next state
         }
-        
+
         return in_array($currentState, $this->finalStates);
     }
 
     //check if accepted by NFA
-    private function isAcceptedByNFA($input) {
+    private function isAcceptedByNFA($input)
+    {
         $currentStates = [$this->startState];
-        
+
         foreach (str_split($input) as $symbol) {
             $nextStates = [];
             foreach ($currentStates as $state) {
@@ -66,69 +66,71 @@ class FiniteStateMachine {
             }
             $currentStates = array_unique($nextStates);
         }
-        
+
         foreach ($currentStates as $state) {
             if (in_array($state, $this->finalStates)) {
                 return true;
             }
         }
-        
+
         return false;
     }
-    public function nfaToDfa(NonDeterministicFiniteAutomaton $nfa) {
-        if($this->isDFA()){
+    public function nfaToDfa(NonDeterministicFiniteAutomaton $nfa)
+    {
+        if ($this->isDFA()) {
             //Intialize DFA
-        $dfa = new DeterministicFiniteAutomaton();
-        $dfa->startState = $nfa->startState;
-        $dfa->alphabet = $nfa->alphabet;
-        //create unmarked states group of NFA wrapped Array
-        $unmarkedStates = [[$nfa->startState]];
-        //emptry transion and final for dfa 
-        $dfa->transitionTable = [];
-        $dfa->finalStates = [];
+            $dfa = new DeterministicFiniteAutomaton();
+            $dfa->startState = $nfa->startState;
+            $dfa->alphabet = $nfa->alphabet;
+            //create unmarked states group of NFA wrapped Array
+            $unmarkedStates = [[$nfa->startState]];
+            //emptry transion and final for dfa 
+            $dfa->transitionTable = [];
+            $dfa->finalStates = [];
 
-        while (!empty($unmarkedStates)) {
-            //pop an unmarked state group from stack 
-            $current = array_pop($unmarkedStates);
-            $currentStateName = implode(",", $current);
-            //ensure that transition table entry exist for current state group
-            if (!isset($dfa->transitionTable[$currentStateName])) {
-                $dfa->transitionTable[$currentStateName] = [];
-            }
-            //collect all the possible states nfa to current state
-            foreach ($nfa->alphabet as $symbol) {
-                $nextStates = [];
+            while (!empty($unmarkedStates)) {
+                //pop an unmarked state group from stack 
+                $current = array_pop($unmarkedStates);
+                $currentStateName = implode(",", $current);
+                //ensure that transition table entry exist for current state group
+                if (!isset($dfa->transitionTable[$currentStateName])) {
+                    $dfa->transitionTable[$currentStateName] = [];
+                }
+                //collect all the possible states nfa to current state
+                foreach ($nfa->alphabet as $symbol) {
+                    $nextStates = [];
+                    foreach ($current as $state) {
+                        //merge the dupplicates
+                        if (isset($nfa->transitionTable[$state][$symbol])) {
+                            $nextStates = array_merge($nextStates, $nfa->transitionTable[$state][$symbol]);
+                        }
+                    }
+                    $nextStates = array_unique($nextStates);
+                    //convert all the nextStates to nextStateName
+                    if (!empty($nextStates)) {
+                        $nextStateName = implode(",", $nextStates);
+                        //check if nextStateName is not mark in the dfa, then add it to stack of unmark
+                        if (!isset($dfa->transitionTable[$currentStateName][$symbol])) {
+                            $dfa->transitionTable[$currentStateName][$symbol] = $nextStateName;
+                            $unmarkedStates[] = $nextStates;
+                        }
+                    }
+                }
+                //check final states of the NFA
                 foreach ($current as $state) {
-                    //merge the dupplicates
-                    if (isset($nfa->transitionTable[$state][$symbol])) {
-                        $nextStates = array_merge($nextStates, $nfa->transitionTable[$state][$symbol]);
-                    }
-                }
-                $nextStates = array_unique($nextStates);
-                //convert all the nextStates to nextStateName
-                if (!empty($nextStates)) {
-                    $nextStateName = implode(",", $nextStates);
-                    //check if nextStateName is not mark in the dfa, then add it to stack of unmark
-                    if (!isset($dfa->transitionTable[$currentStateName][$symbol])) {
-                        $dfa->transitionTable[$currentStateName][$symbol] = $nextStateName;
-                        $unmarkedStates[] = $nextStates;
+                    if (in_array($state, $nfa->finalStates)) {
+                        $dfa->finalStates[] = $currentStateName;
+                        break;
                     }
                 }
             }
-            //check final states of the NFA
-            foreach ($current as $state) {
-                if (in_array($state, $nfa->finalStates)) {
-                    $dfa->finalStates[] = $currentStateName;
-                    break;
-                }
-            }
-        }
-        return $dfa;
-        }
-        else echo "The FA is aleady a DFA";
+            return $dfa;
+        } else
+            echo "The FA is aleady a DFA";
     }
     //minize by using Hopcroft algo
-    public function minimizeDFA(DeterministicFiniteAutomaton $dfa) {
+    public function minimizeDFA(DeterministicFiniteAutomaton $dfa)
+    {
         //Initialize Partition P = F, Q \ F. 
         //F final state, array_key(...) = Q set of all transition, Array_diff(Q) = set are not final
         $P = [$dfa->finalStates, array_diff(array_keys($dfa->transitionTable), $dfa->finalStates)];
@@ -198,10 +200,70 @@ class FiniteStateMachine {
 
         return $minDFA;
     }
+    //for generating graph
+    private function transitionsToDot(Graph $graph)
+    {
+        $dot = "digraph G {\n";
+        $dot .= "    rankdir=LR;\n";
+
+        // Define start state
+        $dot .= "    node [shape = point]; start;\n";
+        $dot .= "    start -> \"$graph->startState\";\n";
+        $dot .= "    node [shape = circle];\n";
+
+        foreach ($graph->transitionTable as $state => $actions) {
+            // Define node shapes based on final or non-final state
+            if (in_array($state, $graph->finalStates)) {
+                $dot .= "    \"$state\" [shape = doublecircle];\n";
+            } else {
+                $dot .= "    \"$state\" [shape = circle];\n";
+            }
+
+            // Add transitions for each action
+            foreach ($actions as $action => $next_states) {
+                foreach ($next_states as $next_state) {
+                    $dot .= "    \"$state\" -> \"$next_state\" [label=\"$action\"];\n";
+                }
+            }
+        }
+
+        $dot .= "}";
+        return $dot;
+    }
+
+    // Method to render the DOT representation as a PNG using Graphviz
+    private function renderGraph($dotString, $outputFile)
+    {
+        // Ensure directory exists for output file
+        $outputDir = dirname($outputFile);
+        if (!file_exists($outputDir)) {
+            mkdir($outputDir, 0777, true);
+        }
+
+        // Write DOT string to a temporary file
+        $tempDotFile = tempnam(sys_get_temp_dir(), 'graph') . '.dot';
+        file_put_contents($tempDotFile, $dotString);
+
+        // Generate PNG file using Graphviz
+        $command = "dot -Tpng $tempDotFile -o $outputFile";
+        shell_exec($command);
+
+        // Clean up temporary DOT file
+        unlink($tempDotFile);
+
+        return $outputFile;
+    }
+
+    // Method to generate the graph and return the path to the generated PNG file
+    public function generateGraph(Graph $graph)
+    {
+        $graphDot = $this->transitionsToDot($graph);
+        $outputFile = __DIR__ . '/graphs/' . $graph->name . '.png';
+        return $this->renderGraph($graphDot, $outputFile);
+    }
+
 }
 // Example usage:
-require_once "DeterministicFiniteAutomaton.php";
-require_once "NonDeterministicFiniteAutomaton.php";
 // $numStates = 3;
 // $alphabet = [0, 1];
 // $startState = ['A'];
