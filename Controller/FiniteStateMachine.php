@@ -4,17 +4,11 @@ require_once "NonDeterministicFiniteAutomaton.php";
 require_once "Graph.php";
 class FiniteStateMachine
 {
-    private $alphabet;
-    private $transitions;
-    private $startState;
-    private $finalStates;
-    private $name;
-
     //check if FA is DFA or NFA 
-    public function isDFA()
+    public function isDFA($fa)
     {
-        foreach ($this->transitions as $transitionsForState) {
-            foreach ($this->alphabet as $input) {
+        foreach ($fa->transitions as $transitionsForState) {
+            foreach ($fa->alphabet as $input) {
                 if (!isset($transitionsForState[$input]) || count($transitionsForState[$input]) != 1) {
                     return false;
                 }
@@ -25,50 +19,50 @@ class FiniteStateMachine
     }
 
     // check if a string a is accepted or not 
-    public function isAccepted($input)
+    public function isAccepted($input,$fa)
     {
         //if dfa get check if accepted by dfa
-        if ($this->isDFA()) {
-            return $this->isAcceptedByDFA($input);
+        if ($this->isDFA($fa)) {
+            return $this->isAcceptedByDFA($input,$fa);
         }
         //else get check if accepted by nfa
         else {
-            return $this->isAcceptedByNFA($input);
+            return $this->isAcceptedByNFA($input,$fa);
         }
     }
 
     //check if accepted by dfa
-    private function isAcceptedByDFA($input)
+    private function isAcceptedByDFA($input,$fa)
     {
-        $currentState = $this->startState;
+        $currentState = $fa->startState;
 
         foreach (str_split($input) as $symbol) {
             if (!isset($this->transitions[$currentState][$symbol])) {
                 return false; // No transition defined for this symbol from the current state
             }
-            $currentState = $this->transitions[$currentState][$symbol][0]; // Move to the next state
+            $currentState = $fa->transitions[$currentState][$symbol][0]; // Move to the next state
         }
 
-        return in_array($currentState, $this->finalStates);
+        return in_array($currentState, $fa->finalStates);
     }
 
     //check if accepted by NFA
-    private function isAcceptedByNFA($input)
+    private function isAcceptedByNFA($input,$fa)
     {
-        $currentStates = [$this->startState];
+        $currentStates = [$fa->startState];
 
         foreach (str_split($input) as $symbol) {
             $nextStates = [];
             foreach ($currentStates as $state) {
-                if (isset($this->transitions[$state][$symbol])) {
-                    $nextStates = array_merge($nextStates, $this->transitions[$state][$symbol]);
+                if (isset($fa->transitions[$state][$symbol])) {
+                    $nextStates = array_merge($nextStates, $fa->transitions[$state][$symbol]);
                 }
             }
             $currentStates = array_unique($nextStates);
         }
 
         foreach ($currentStates as $state) {
-            if (in_array($state, $this->finalStates)) {
+            if (in_array($state, $fa->finalStates)) {
                 return true;
             }
         }
@@ -263,19 +257,3 @@ class FiniteStateMachine
     }
 
 }
-// Example usage:
-// $numStates = 3;
-// $alphabet = [0, 1];
-// $startState = ['A'];
-// $finalStates = ['C'];
-// $transitions = [
-//     'A' => ['0' => ['B'], '1' => ['A','C']],
-//     'B' => ['0' => ['B','C'], '1' => ['C']],
-//     'C' => ['0' => ['A'], '1' => ['C']]
-// ];
-
-
-
-
-
-?>
