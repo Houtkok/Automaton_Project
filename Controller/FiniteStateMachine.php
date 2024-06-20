@@ -37,7 +37,7 @@ class FiniteStateMachine
         $currentState = $fa->startState;
 
         foreach (str_split($input) as $symbol) {
-            if (!isset($this->transitions[$currentState][$symbol])) {
+            if (!isset($fa->transitions[$currentState][$symbol])) {
                 return false; // No transition defined for this symbol from the current state
             }
             $currentState = $fa->transitions[$currentState][$symbol][0]; // Move to the next state
@@ -71,7 +71,7 @@ class FiniteStateMachine
     }
     public function nfaToDfa(NonDeterministicFiniteAutomaton $nfa)
     {
-        if ($this->isDFA()) {
+        if ($this->isDFA($nfa)) {
             //Intialize DFA
             $dfa = new DeterministicFiniteAutomaton();
             $dfa->startState = $nfa->startState;
