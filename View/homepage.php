@@ -7,58 +7,58 @@
     <title>Automata</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        .state {
+            display: inline-block;
+            background-color: #f0f0f0;
+            padding: 5px 10px;
+            margin: 5px;
+            border-radius: 5px;
+        }
+
+        .remove-btn {
+            cursor: pointer;
+            color: red;
+            margin-left: 5px;
+        }
+    </style>
 </head>
-<style>
-    .state {
-        display: inline-block;
-        background-color: #f0f0f0;
-        padding: 5px 10px;
-        margin: 5px;
-        border-radius: 5px;
-    }
-
-    .remove-btn {
-        cursor: pointer;
-        color: red;
-        margin-left: 5px;
-
-    }
-</style>
 
 <body>
-    <header class="bg-#365679; p-2 d-flex justify-content-between align-items-center">
+    <header class="bg-#365679 p-2 d-flex justify-content-between align-items-center">
         <h3 style="color: white;">Automata</h3>
     </header>
     <main class="container">
         <div class="row">
             <div class="col-6">
                 <form action="handlerFA.php" method="POST">
-                <section class="main-input">
-                    <div class="form-group">
-                        <label for="states">States</label>
-                        <input type="text" class="form-control" name="states" id="states" placeholder="Enter states(Separated by ,)">
-                    </div>
-                    <div class="form-group">
-                        <label for="symbols">Symbols</label>
-                        <input type="text" class="form-control" name="symbols" id="symbols" placeholder="Enter symbols(Separated by ,)">
-                    </div>
-                    <div class="form-group">
-                        <label for="start-state">Start State</label>
-                        <select class="form-control" name="start_state "id="start-state">
-                            <option value="bana">fasd</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="final-states">Final States</label>
-                        <select class="form-control" name="final_states" id="final-states">
-                            <option value="">Select final states</option>
-                        </select>
-                        <br>
-                        <div id="selected-state">
-                            <p>Selected Final States:</p>
+                    <section class="main-input">
+                        <div class="form-group">
+                            <label for="states">States</label>
+                            <input type="text" class="form-control" name="states" id="states"
+                                placeholder="Enter states (Separated by ,)">
                         </div>
-                    </div>
-                </section>
+                        <div class="form-group">
+                            <label for="symbols">Symbols</label>
+                            <input type="text" class="form-control" name="symbols" id="symbols"
+                                placeholder="Enter symbols (Separated by ,)">
+                        </div>
+                        <div class="form-group">
+                            <label for="start-state">Start State</label>
+                            <select class="form-control" name="start-state" id="start-state">
+                                <!-- Options will be populated dynamically -->
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="final-states">Final States</label>
+                            <select class="form-control" name="final-states" id="final-states">
+                                <option value="">Select final states</option>
+                                <!-- Options will be populated dynamically -->
+                            </select>
+                            <br>
+                            <input id="selected-state" name="selected-final" type="text">
+                                <!-- Selected final states will be displayed dynamically -->
+                    </section>
             </div>
             <div class="col-6">
                 <h3>Transition Table</h3>
@@ -77,14 +77,14 @@
                 </section>
             </div>
         </div>
-        <h3>Feature</h3>
+        <h3>Features</h3>
         <section class="features">
             <div class="row">
                 <div class="col-6">
                     <div class="card mb-3">
                         <div class="card-body">
                             <h5 class="card-title">Test if this FA is deterministic or non-deterministic</h5>
-                            <button type="submit" class="btn btn-secondary" name="action" value="test_derterministic" >TEST</button>
+                            <button type="submit" class="btn btn-secondary" name="action" value="test_deterministic">TEST</button>
                         </div>
                     </div>
                 </div>
@@ -92,7 +92,7 @@
                     <div class="card mb-3">
                         <div class="card-body">
                             <h5 class="card-title">NFA to DFA</h5>
-                            <button type="submit" class="btn btn-secondary" name="action" value="convert_nfa" >Convert</button>
+                            <button type="submit" class="btn btn-secondary" name="action" value="convert_nfa">Convert</button>
                         </div>
                     </div>
                 </div>
@@ -102,7 +102,7 @@
                     <div class="card mb-3">
                         <div class="card-body">
                             <h5 class="card-title">Test if a string is accepted</h5>
-                            <input type="text" class="form-control mb-2" placeholder="Input a string">
+                            <input type="text" class="form-control mb-2" name="test_string_input" placeholder="Input a string">
                             <button type="submit" class="btn btn-secondary" name="action" value="test_string">TEST</button>
                         </div>
                     </div>
@@ -117,8 +117,8 @@
                 </div>
             </div>
         </section>
-    </form>
-                
+        </form>
+
     </main>
     <footer>
     </footer>

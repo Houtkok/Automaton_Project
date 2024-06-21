@@ -4,11 +4,13 @@ require_once '../Controller/FiniteStateMachine.php';
 require_once '../Controller/DeterministicFiniteAutomaton.php';
 require_once '../Controller/NonDeterministicFiniteAutomaton.php';
 
+var_dump($_POST['selected-final']);
+
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     $states = $_POST["states"];
     $symbols = $_POST["symbols"];
-    $start_state = $_POST["start_state"];
-    $final_states = isset($_POST["final_states"]) ? $_POST["final_states"] : [];
+    $start_state = isset($_POST["start-state"])? $_POST['start-state'] :'';
+    $final_states = isset($_POST["selected-final"]) ? $_POST["selected-final"] : [];
     $transition_table = [];
     echo "States: $states, Symbols: $symbols, Start State: $start_state, Final State: $final_states";
     // Example processing with basic validation
@@ -33,10 +35,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $fsm = new FiniteStateMachine();
     if($fsm -> isDFA((object)['trasitions' => $transition_table, 'alphabet' => $symbols])){
-        $fa = new DeterministicFiniteAutomaton($states, $symbols, $transition_table, $start_state, $final_states);
+        $fa = new DeterministicFiniteAutomaton();
     }
     else{
-        $fa = new NonDeterministicFiniteAutomaton($states, $symbols, $transition_table, $start_state, $final_states);
+        $fa = new NonDeterministicFiniteAutomaton();
     }
 
     $action = isset($_POST['action']) ? $_POST['action']:'';
