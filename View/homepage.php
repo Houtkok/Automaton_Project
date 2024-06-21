@@ -36,16 +36,16 @@
                 <section class="main-input">
                     <div class="form-group">
                         <label for="states">States</label>
-                        <input type="text" class="form-control" id="states" placeholder="Enter states(Separated by ,)">
+                        <input type="text" class="form-control" name="states" id="states" placeholder="Enter states(Separated by ,)">
                     </div>
                     <div class="form-group">
                         <label for="symbols">Symbols</label>
-                        <input type="text" class="form-control" id="symbols" placeholder="Enter symbols(Separated by ,)">
+                        <input type="text" class="form-control" name="symbols" id="symbols" placeholder="Enter symbols(Separated by ,)">
                     </div>
                     <div class="form-group">
                         <label for="start-state">Start State</label>
                         <select class="form-control" name="start_state "id="start-state">
-                            <option value="">Select start state</option>
+                            <option value="bana">fasd</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -84,7 +84,7 @@
                     <div class="card mb-3">
                         <div class="card-body">
                             <h5 class="card-title">Test if this FA is deterministic or non-deterministic</h5>
-                            <button class="btn btn-secondary" name="action" value="test_derterministic" >TEST</button>
+                            <button type="submit" class="btn btn-secondary" name="action" value="test_derterministic" >TEST</button>
                         </div>
                     </div>
                 </div>
@@ -92,7 +92,7 @@
                     <div class="card mb-3">
                         <div class="card-body">
                             <h5 class="card-title">NFA to DFA</h5>
-                            <button class="btn btn-secondary" name="action" value="convert_nfa" >Convert</button>
+                            <button type="submit" class="btn btn-secondary" name="action" value="convert_nfa" >Convert</button>
                         </div>
                     </div>
                 </div>
@@ -103,7 +103,7 @@
                         <div class="card-body">
                             <h5 class="card-title">Test if a string is accepted</h5>
                             <input type="text" class="form-control mb-2" placeholder="Input a string">
-                            <button class="btn btn-secondary" name="action" value="test_string">TEST</button>
+                            <button type="submit" class="btn btn-secondary" name="action" value="test_string">TEST</button>
                         </div>
                     </div>
                 </div>
@@ -111,7 +111,7 @@
                     <div class="card mb-3">
                         <div class="card-body">
                             <h5 class="card-title">Minimize DFA</h5>
-                            <button class="btn btn-secondary" name="action" value="minimize">Minimize</button>
+                            <button type="submit" class="btn btn-secondary" name="action" value="minimize">Minimize</button>
                         </div>
                     </div>
                 </div>

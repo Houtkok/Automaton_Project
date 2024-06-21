@@ -1,15 +1,26 @@
 <?php
 
-require_once 'FiniteStateMachine.php';
-// require_once '/Controller/DeterministicFiniteAutomata.php';
-// require_once '/Controller/NonDeterministicFiniteAutomata.php';
+require_once '../Controller/FiniteStateMachine.php';
+require_once '../Controller/DeterministicFiniteAutomaton.php';
+require_once '../Controller/NonDeterministicFiniteAutomaton.php';
 
-if($_SERVER["REQUEST"] == "POST"){
-    $states = isset($_POST['states']) ? explode(',',$_POST['states']):[];
-    $symbols = isset($_POST['symbols']) ? explode(',',$_POST['symbols']):[];
-    $start_state = isset($_POST['start_state']) ? $_POST['states']:'';
-    $final_states = isset($_POST['final_states']) ? explode(',',$_POST['final_states']):[];
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+    $states = $_POST["states"];
+    $symbols = $_POST["symbols"];
+    $start_state = $_POST["start_state"];
+    $final_states = isset($_POST["final_states"]) ? $_POST["final_states"] : [];
     $transition_table = [];
+    echo "States: $states, Symbols: $symbols, Start State: $start_state, Final State: $final_states";
+    // Example processing with basic validation
+    if (!empty($states) && !empty($symbols) && !empty($start_state)) {
+        // Process the form data as needed
+        echo "States: $states, Symbols: $symbols, Start State: $start_state";
+        
+        // Proceed with further processing, e.g., constructing automaton, etc.
+    } else {
+        // Handle case where required fields are not filled
+        echo "Please fill out all required fields.";
+    }
 
     foreach($states as $state){
         foreach($symbols as $symbol){
@@ -28,7 +39,7 @@ if($_SERVER["REQUEST"] == "POST"){
         $fa = new NonDeterministicFiniteAutomaton($states, $symbols, $transition_table, $start_state, $final_states);
     }
 
-    $action = isset($_POST['action']) ? $POST['action']:'';
+    $action = isset($_POST['action']) ? $_POST['action']:'';
 
     switch($action){
         case 'test_derterministic':
@@ -49,4 +60,8 @@ if($_SERVER["REQUEST"] == "POST"){
     }
     print_r($result);
 
+}
+else {
+    // Handle case where form is not submitted
+    echo "Form submission method not supported.";
 }
