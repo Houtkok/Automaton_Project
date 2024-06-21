@@ -16,7 +16,7 @@ class DeterministicFiniteAutomaton{
         $this -> startState = $state;
     }
     public function setFinalState(array $states){
-        $this -> finalStates = array_unique($states);
+        $this -> finalStates = $states;
     }
     public function setAlphabet(array $symbols){
         $this -> alphabet = $symbols;
