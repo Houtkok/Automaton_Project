@@ -58,7 +58,7 @@ $(document).ready(function () {
             addSelectedState(selectedState);
         }
         // Reset select value to default after adding
-        $(this).val('');
+        // $(this).val('');
     });
 
     // Function to add selected state to container

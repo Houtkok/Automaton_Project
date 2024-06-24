@@ -31,34 +31,32 @@
     <main class="container">
         <div class="row">
             <div class="col-6">
-                <form action="handlerFA.php" method="POST">
-                    <section class="main-input">
-                        <div class="form-group">
-                            <label for="states">States</label>
-                            <input type="text" class="form-control" name="states" id="states"
-                                placeholder="Enter states (Separated by ,)">
+                <section class="main-input">
+                    <div class="form-group">
+                        <label for="states">States</label>
+                        <input type="text" class="form-control" id="states" placeholder="Enter states">
+                    </div>
+                    <div class="form-group">
+                        <label for="symbols">Symbols</label>
+                        <input type="text" class="form-control" id="symbols" placeholder="Enter symbols">
+                    </div>
+                    <div class="form-group">
+                        <label for="start-state">Start State</label>
+                        <select class="form-control" id="start-state">
+                            <option value="">Select start state</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="final-states">Final States</label>
+                        <select class="form-control" id="final-states">
+                            <option value="">Select final states</option>
+                        </select>
+                        <br>
+                        <div id="selected-state">
+                            <p>Selected Final States:</p>
                         </div>
-                        <div class="form-group">
-                            <label for="symbols">Symbols</label>
-                            <input type="text" class="form-control" name="symbols" id="symbols"
-                                placeholder="Enter symbols (Separated by ,)">
-                        </div>
-                        <div class="form-group">
-                            <label for="start-state">Start State</label>
-                            <select class="form-control" name="start-state" id="start-state">
-                                <!-- Options will be populated dynamically -->
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="final-states">Final States</label>
-                            <select class="form-control" name="final-states" id="final-states">
-                                <option value="">Select final states</option>
-                                <!-- Options will be populated dynamically -->
-                            </select>
-                            <br>
-                            <input id="selected-state" name="selected-final" type="text">
-                                <!-- Selected final states will be displayed dynamically -->
-                    </section>
+                    </div>
+                </section>
             </div>
             <div class="col-6">
                 <h3>Transition Table</h3>
