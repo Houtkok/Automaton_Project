@@ -75,4 +75,32 @@ $(document).ready(function () {
             });
         }
     }
+
+    // Handle form submission
+    $('#automata-form').on('submit', function (event) {
+        // Collect final states from the container
+        const finalStates = [];
+        $('#selected-state .state').each(function () {
+            finalStates.push($(this).text().trim().replace(' x', ''));
+        });
+
+        // Append final states as hidden inputs to the form
+        finalStates.forEach(state => {
+            $(this).append(`<input type="hidden" name="final-states[]" value="${state}">`);
+        });
+
+        // Collect transition table data
+        const states = $('#states').val().split(',').map(s => s.trim()).filter(s => s);
+        const symbols = $('#symbols').val().split(',').map(s => s.trim()).filter(s => s);
+        states.forEach(state => {
+            symbols.forEach(symbol => {
+                const transitionValue = $(`select[data-state="${state}"][data-symbol="${symbol}"]`).val();
+                if (transitionValue) {
+                    $(this).append(`<input type="hidden" name="transition_${state}_${symbol}" value="${transitionValue}">`);
+                }
+            });
+        });
+
+        // Allow the form to be submitted
+    });
 });

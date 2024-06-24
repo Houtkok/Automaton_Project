@@ -53,7 +53,6 @@ class FiniteStateMachine
                 }
                 $currentState = $fa->transitions[$currentState][$symbol][0]; // Move to the next state
             }
-
             return in_array($currentState, $fa->finalStates);
         }
         catch(Exception $e){
