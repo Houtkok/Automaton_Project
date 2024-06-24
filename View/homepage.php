@@ -52,11 +52,10 @@
                         <div class="form-group">
                             <label for="final-states">Final States</label>
                             <select class="form-control" name="final-states" id="final-states">
-                                <option value="">Select final states</option>
                                 <!-- Options will be populated dynamically -->
                             </select>
                             <br>
-                            <input id="selected-state" name="selected-final" type="text">
+                            <div id="selected-state" name="selected-final" type="text">
                                 <!-- Selected final states will be displayed dynamically -->
                     </section>
             </div>

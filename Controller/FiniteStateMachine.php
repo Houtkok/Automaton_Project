@@ -53,18 +53,11 @@ class FiniteStateMachine
                 }
                 $currentState = $fa->transitions[$currentState][$symbol][0]; // Move to the next state
             }
-<<<<<<< HEAD
-            $currentState = $fa->transitions[$currentState][$symbol][0]; // Move to the next state
-        }
-        return in_array($currentState, $fa->finalStates);
-=======
-
             return in_array($currentState, $fa->finalStates);
         }
         catch(Exception $e){
             throw new Exception("Error in isAccepted method: " . $e->getMessage());
         }
->>>>>>> 4d00942bd2af2d18fd47a0c85b0bb74cda59c033
     }
 
     //check if accepted by NFA
