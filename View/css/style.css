@@ -30,6 +30,9 @@ header{
     padding: 20px;
     margin: 10px 0;
 }
+.transition-select {
+    width: 100%;
+}
 
 .features .card {
     border: 1px solid #ddd;

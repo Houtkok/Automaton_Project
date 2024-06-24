@@ -1,23 +1,23 @@
 <?php
-require_once 'FiniteStateMachine.php'; 
-$fml = new FiniteStateMachine();
-$dfa = new DeterministicFiniteAutomaton();
-$nfa = new NonDeterministicFiniteAutomaton();
-$graph = new Graph();
+// require_once 'FiniteStateMachine.php'; 
+// $fml = new FiniteStateMachine();
+// $dfa = new DeterministicFiniteAutomaton();
+// $nfa = new NonDeterministicFiniteAutomaton();
+// $graph = new Graph();
 
-$transitions = [
-    'q0' => ['a' => ['q1'], 'b' => ['q0']],
-    'q1' => ['a' => ['q2']],
-    'q2' => ['a' => ['q2'], 'b' => ['q0']]
-];
+// $transitions = [
+//     'q0' => ['a' => ['q1'], 'b' => ['q0']],
+//     'q1' => ['a' => ['q2']],
+//     'q2' => ['a' => ['q2'], 'b' => ['q0']]
+// ];
 
-$graph->setAlphabet(['a', 'b']);
-$graph->setTransition($transitions);
-$graph->setStartState('q0');
-$graph->setFinalState(['q2']);
-$graph->name = 'test3'; // Set a name for the FSM
+// $graph->setAlphabet(['a', 'b']);
+// $graph->setTransition($transitions);
+// $graph->setStartState('q0');
+// $graph->setFinalState(['q2']);
+// $graph->name = 'test3'; // Set a name for the FSM
 
-$outputFilePath = $fml->generateGraph($graph);
+// $outputFilePath = $fml->generateGraph($graph);
 
 // set dfa
 // $dfa->setStartState('q0');

@@ -4,12 +4,23 @@ require_once "NonDeterministicFiniteAutomaton.php";
 require_once "Graph.php";
 class FiniteStateMachine
 {
+    private $alphabet;
+    private $transitions;
+    private $startState;
+    private $finalStates;
+
+    public function __construct($alphabet, $startState, $finalStates, $transitions) {
+        $this->alphabet = $alphabet;
+        $this->startState = $startState;
+        $this->finalStates = $finalStates;
+        $this->transitions = $transitions;
+    }
     //check if FA is DFA or NFA 
-    public function isDFA($fa)
+    public function isDFA()
     {
         try{
-            foreach ($fa->transitions as $transitionsForState) {
-                foreach ($fa->alphabet as $input) {
+            foreach ($this->transitions as $transitionsForState) {
+                foreach ($this->alphabet as $input) {
                     if (!isset($transitionsForState[$input]) || count($transitionsForState[$input]) != 1) {
                         return false;
                     }
@@ -24,16 +35,16 @@ class FiniteStateMachine
     }
 
     // check if a string a is accepted or not 
-    public function isAccepted($input,$fa)
+    public function isAccepted($input)
     {   
         try{
             //if dfa get check if accepted by dfa
-            if ($this->isDFA($fa)) {
-                return $this->isAcceptedByDFA($input,$fa);
+            if ($this->isDFA()) {
+                return $this->isAcceptedByDFA($input);
             }
             //else get check if accepted by nfa
             else {
-                return $this->isAcceptedByNFA($input,$fa);
+                return $this->isAcceptedByNFA($input);
             }
         }
         catch(Exception $e){
@@ -42,18 +53,18 @@ class FiniteStateMachine
     }
 
     //check if accepted by dfa
-    private function isAcceptedByDFA($input,$fa)
+    private function isAcceptedByDFA($input)
     {
         try{
-            $currentState = $fa->startState;
+            $currentState = $this->startState;
 
             foreach (str_split($input) as $symbol) {
-                if (!isset($fa->transitions[$currentState][$symbol])) {
+                if (!isset($this->transitions[$currentState][$symbol])) {
                     return false; // No transition defined for this symbol from the current state
                 }
-                $currentState = $fa->transitions[$currentState][$symbol][0]; // Move to the next state
+                $currentState = $this->transitions[$currentState][$symbol][0]; // Move to the next state
             }
-            return in_array($currentState, $fa->finalStates);
+            return in_array($currentState, $this->finalStates);
         }
         catch(Exception $e){
             throw new Exception("Error in isAccepted method: " . $e->getMessage());
@@ -61,23 +72,23 @@ class FiniteStateMachine
     }
 
     //check if accepted by NFA
-    private function isAcceptedByNFA($input,$fa)
+    private function isAcceptedByNFA($input)
     {
         try{
-            $currentStates = [$fa->startState];
+            $currentStates = [$this->startState];
 
             foreach (str_split($input) as $symbol) {
                 $nextStates = [];
                 foreach ($currentStates as $state) {
-                    if (isset($fa->transitions[$state][$symbol])) {
-                        $nextStates = array_merge($nextStates, $fa->transitions[$state][$symbol]);
+                    if (isset($this->transitions[$state][$symbol])) {
+                        $nextStates = array_merge($nextStates, $this->transitions[$state][$symbol]);
                     }
                 }
                 $currentStates = array_unique($nextStates);
             }
 
             foreach ($currentStates as $state) {
-                if (in_array($state, $fa->finalStates)) {
+                if (in_array($state, $this->finalStates)) {
                     return true;
                 }
             }
@@ -91,7 +102,7 @@ class FiniteStateMachine
     public function nfaToDfa(NonDeterministicFiniteAutomaton $nfa)
     {
         try{
-            if ($this->isDFA($nfa)) {
+            if ($this->isDFA()) {
                 //Intialize DFA
                 $dfa = new DeterministicFiniteAutomaton();
                 $dfa->startState = $nfa->startState;

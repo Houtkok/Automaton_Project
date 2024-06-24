@@ -1,3 +1,4 @@
+
 $(document).ready(function () {
     // Event listeners for states and symbols input
     $('#states, #symbols').on('input', function () {
@@ -24,10 +25,11 @@ $(document).ready(function () {
             const row = $('<tr></tr>');
             row.append(`<td>${state}</td>`);
             symbols.forEach(symbol => {
-                row.append(`<td><select class="form-control transition-select" data-state="${state}" data-symbol="${symbol}">
-                    <option value="">Select state</option>
+                const select = $(`<select multiple class="form-control transition-select" data-state="${state}" data-symbol="${symbol}">
                     ${states.map(s => `<option value="${s}">${s}</option>`).join('')}
-                </select></td>`);
+                </select>`);
+                row.append($('<td></td>').append(select));
+                select.select2();
             });
             $('#transition-table tbody').append(row);
         });
@@ -46,6 +48,8 @@ $(document).ready(function () {
             $('#start-state').append(`<option value="${state}">${state}</option>`);
             $('#final-states').append(`<option value="${state}">${state}</option>`);
         });
+
+        $('#final-states');
     }
 
     // Initial call to populate the transition table and state options
@@ -58,7 +62,7 @@ $(document).ready(function () {
             addSelectedState(selectedState);
         }
         // Reset select value to default after adding
-        $(this).val('');
+        $(this).val('').trigger('change');
     });
 
     // Function to add selected state to container
@@ -94,9 +98,11 @@ $(document).ready(function () {
         const symbols = $('#symbols').val().split(',').map(s => s.trim()).filter(s => s);
         states.forEach(state => {
             symbols.forEach(symbol => {
-                const transitionValue = $(`select[data-state="${state}"][data-symbol="${symbol}"]`).val();
-                if (transitionValue) {
-                    $(this).append(`<input type="hidden" name="transition_${state}_${symbol}" value="${transitionValue}">`);
+                const transitionValues = $(`select[data-state="${state}"][data-symbol="${symbol}"]`).val();
+                if (transitionValues && transitionValues.length) {
+                    transitionValues.forEach(transitionValue => {
+                        $(this).append(`<input type="hidden" name="transition_${state}_${symbol}[]" value="${transitionValue}">`);
+                    });
                 }
             });
         });
@@ -104,3 +110,4 @@ $(document).ready(function () {
         // Allow the form to be submitted
     });
 });
+
