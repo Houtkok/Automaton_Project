@@ -7,35 +7,12 @@ class Graph
     public $transitionTable;
 
     public $name;
-
-    public function __construct()
-    {
-        $this->name = null;
-        $this->startState = null;
-        $this->finalStates = [];
-        $this->alphabet = [];
-        $this->transitionTable = [];
-    }
-
-    public function setName($name)
-    {
-        $this->name = $name;
-    }
-    public function setStartState($state)
-    {
-        $this->startState = $state;
-    }
-    public function setFinalState(array $states)
-    {
-        $this->finalStates = $states;
-    }
-    public function setAlphabet(array $symbols)
-    {
-        $this->alphabet = $symbols;
-    }
-    public function setTransition(array $transitionTable)
-    {
-        $this->transitionTable = $transitionTable;
+    public function __construct($name,$alphabet, $startState, $finalStates, $transitions) {
+        $this->name=$name;
+        $this->alphabet = $alphabet;
+        $this->startState = $startState;
+        $this->finalStates = $finalStates;
+        $this->transitions = $transitions;
     }
 }
 ?>

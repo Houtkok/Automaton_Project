@@ -20,19 +20,16 @@
                 <form id="automata-form" action="handlerFA.php" method="POST">
                     <section class="main-input">
                         <div class="form-group">
-                            <label for="graph-name">States</label>
-                            <input type="text" class="form-control" name="graph-name" id="graph-name"
-                                placeholder="Enter FA name">
+                            <label for="graph-name">Name</label>
+                            <input type="text" class="form-control" name="graph-name" id="graph-name" placeholder="Enter FA name">
                         </div>
                         <div class="form-group">
                             <label for="states">States</label>
-                            <input type="text" class="form-control" name="states" id="states"
-                                placeholder="Enter states (Separated by ,)">
+                            <input type="text" class="form-control" name="states" id="states" placeholder="Enter states (Separated by ,)">
                         </div>
                         <div class="form-group">
                             <label for="symbols">Symbols</label>
-                            <input type="text" class="form-control" name="symbols" id="symbols"
-                                placeholder="Enter symbols (Separated by ,)">
+                            <input type="text" class="form-control" name="symbols" id="symbols" placeholder="Enter symbols (Separated by ,)">
                         </div>
                         <div class="form-group">
                             <label for="start-state">Start State</label>
@@ -42,7 +39,7 @@
                         </div>
                         <div class="form-group">
                             <label for="final-states">Final States</label>
-                            <select class="form-control" id="final-states">
+                            <select class="form-control" id="final-states" name="final-states[]" >
                                 <!-- Options will be populated dynamically -->
                             </select>
                             <br>
@@ -51,6 +48,8 @@
                             </div>
                         </div>
                     </section>
+                    <label for="confim" style ="color: red;">please confirm before using feature</label><br>
+                    <button type="submit" class="btn btn-secondary" name="submit">confirm</button>
                 </form>
             </div>
             <div class="col-6">
@@ -69,7 +68,6 @@
                     </table>
                 </section>
             </div>
-            <button type="submit" class="btn btn-primary" form="automata-form" name="action">Confirm</button>
         </div>
         <h3>Features</h3>
         <section class="features">
@@ -78,8 +76,10 @@
                     <div class="card mb-3">
                         <div class="card-body">
                             <h5 class="card-title">Test if this FA is deterministic or non-deterministic</h5>
-                            <button type="submit" class="btn btn-secondary" form="automata-form" name="action"
-                                value="test_deterministic">TEST</button>
+                            <button type="button" class="btn btn-secondary btn-feature" data-action="test_deterministic"
+                                data-target="#test-deterministic-modal" data-toggle="modal">
+                                TEST
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -87,8 +87,10 @@
                     <div class="card mb-3">
                         <div class="card-body">
                             <h5 class="card-title">NFA to DFA</h5>
-                            <button type="submit" class="btn btn-secondary" form="automata-form" name="action"
-                                value="convert_nfa">Convert</button>
+                            <button type="button" class="btn btn-secondary btn-feature" data-action="convert_nfa"
+                                data-target="#nfa-to-dfa-modal" data-toggle="modal">
+                                Convert
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -98,10 +100,12 @@
                     <div class="card mb-3">
                         <div class="card-body">
                             <h5 class="card-title">Test if a string is accepted</h5>
-                            <input type="text" class="form-control mb-2" name="test_string_input"
+                            <input type="text" class="form-control mb-2" name="test_string_input" id="test-string-input"
                                 placeholder="Input a string">
-                            <button type="submit" class="btn btn-secondary" form="automata-form" name="action"
-                                value="test_string">TEST</button>
+                            <button type="button" class="btn btn-secondary btn-feature" data-action="test_string"
+                                data-target="#test-string-modal" data-toggle="modal">
+                                TEST
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -109,18 +113,99 @@
                     <div class="card mb-3">
                         <div class="card-body">
                             <h5 class="card-title">Minimize DFA</h5>
-                            <button type="submit" class="btn btn-secondary" form="automata-form" name="action"
-                                value="minimize">Minimize</button>
+                            <button type="button" class="btn btn-secondary btn-feature" data-action="minimize"
+                                data-target="#minimize-dfa-modal" data-toggle="modal">
+                                Minimize
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
+
+        <!-- Modals -->
+        <div class="modal fade" id="test-deterministic-modal" tabindex="-1" role="dialog"
+            aria-labelledby="test-deterministic-modal-label" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="test-deterministic-modal-label">Test Deterministic Finite Automaton (DFA)</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" id="test-fa-result">
+                        <!-- Result of deterministic test shown here -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal for NFA to DFA conversion -->
+        <div class="modal fade" id="nfa-to-dfa-modal" tabindex="-1" role="dialog" aria-labelledby="nfa-to-dfa-modal-label"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="nfa-to-dfa-modal-label">Convert NFA to DFA</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" id="nfa-to-dfa-result">
+                        <!-- Result of NFA to DFA conversion shown here -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal for Test accepted string -->
+        <div class="modal fade" id="test-string-modal" tabindex="-1" role="dialog" aria-labelledby="test-string-modal-label"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="test-string-modal-label">Test Accepted String</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" id="test-string-result">
+                        <!-- Result of string acceptance test shown here -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal for minimize DFA conversion -->
+        <div class="modal fade" id="minimize-dfa-modal" tabindex="-1" role="dialog" aria-labelledby="minimize-dfa-modal-label"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="minimize-dfa-modal-label">Minimize DFA</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" id="minimize-dfa-result">
+                        <!-- Result of DFA minimization shown here -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
-    <footer>
-    </footer>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <script src="js/script.js"></script>

@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Create FiniteStateMachine instance
     $fsm = new FiniteStateMachine($symbols, $start_state, $final_states, $transition_table);
-    
+
     // Determine if DFA or NFA
     if ($fsm->isDFA()) {
         $fa = new DeterministicFiniteAutomaton();
@@ -49,19 +49,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $fa->setAlphabet($symbols);
     $fa->setTransition($transition_table);
 
+    if(isset($_POST['submit']))
+    {
+    }
     // Handle different actions based on form submission
     $action = isset($_POST['action']) ? $_POST['action'] : '';
 
     switch ($action) {
         case 'test_deterministic':
-            $result = $fsm->isDFA() ? "True" : "False";
+            if ($fsm->isDFA()) {
+                $result = "This FA is a DFA";
+            } else
+                $result = "This FA is a NFA";
             break;
         case 'convert_nfa':
-            $result = $fsm->nfaToDfa($fa);
+            $result = !$fsm->isDFA() ? $fsm->nfaToDfa($fa) : "FA already a DFA";
             break;
         case 'test_string':
             $input_string = isset($_POST['test_string_input']) ? $_POST['test_string_input'] : '';
-            $result = $fsm->isAccepted($input_string);
+            $result = $fsm->isAccepted($input_string) ? "Accepted" : "Not Accepted";
             break;
         case 'minimize':
             $result = $fsm->isDFA() ? $fsm->minimizeDFA($fa) : "This is not a DFA, cannot be minimized.";
@@ -72,6 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Output result
+    //echo $result;
     print_r($result);
 
 } else {

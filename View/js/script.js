@@ -1,4 +1,3 @@
-
 $(document).ready(function () {
     // Event listeners for states and symbols input
     $('#states, #symbols').on('input', function () {
@@ -48,8 +47,6 @@ $(document).ready(function () {
             $('#start-state').append(`<option value="${state}">${state}</option>`);
             $('#final-states').append(`<option value="${state}">${state}</option>`);
         });
-
-        $('#final-states');
     }
 
     // Initial call to populate the transition table and state options
@@ -82,6 +79,8 @@ $(document).ready(function () {
 
     // Handle form submission
     $('#automata-form').on('submit', function (event) {
+        event.preventDefault();
+
         // Collect final states from the container
         const finalStates = [];
         $('#selected-state .state').each(function () {
@@ -107,7 +106,102 @@ $(document).ready(function () {
             });
         });
 
-        // Allow the form to be submitted
+        // Submit the form
+        submitForm();
     });
-});
 
+    // Event listener for feature buttons
+    $('.btn-feature').on('click', function () {
+        const action = $(this).data('action');
+        switch (action) {
+            case 'test_deterministic':
+                testDeterministic();
+                break;
+            case 'convert_nfa':
+                convertNFAtoDFA();
+                break;
+            case 'test_string':
+                testStringAcceptance();
+                break;
+            case 'minimize':
+                minimizeDFA();
+                break;
+            default:
+                // Handle unknown action
+                break;
+        }
+    });
+
+    // Function to test if FA is deterministic or non-deterministic
+    function testDeterministic() {
+        $.ajax({
+            url: 'handlerFA.php',
+            type: 'POST',
+            data: $('#automata-form').serialize() + '&action=test_deterministic',
+            success: function (response) {
+                $('#test-fa-result').html(response);
+                $('#test-deterministic-modal').modal('show');
+            },
+            error: function () {
+                alert('Error testing FA type.');
+            }
+        });
+    }
+
+    // Function to convert NFA to DFA
+    function convertNFAtoDFA() {
+        $.ajax({
+            url: 'handlerFA.php',
+            type: 'POST',
+            data: $('#automata-form').serialize() + '&action=convert_nfa',
+            success: function (response) {
+                $('#nfa-to-dfa-result').html(response);
+                $('#nfa-to-dfa-modal').modal('show');
+                // Display generated graph
+            },
+            error: function () {
+                alert('Error converting NFA to DFA.');
+            }
+        });
+    }
+
+    // Function to test string acceptance
+    function testStringAcceptance() {
+        const testString = $('#test-string-input').val();
+        if (!testString) {
+            alert('Please enter a test string.');
+            return;
+        }
+
+        $.ajax({
+            url: 'handlerFA.php',
+            type: 'POST',
+            data: $('#automata-form').serialize() + '&action=test_string&test_string=' + testString,
+            success: function (response) {
+                $('#test-string-result').html(response);
+                $('#test-string-modal').modal('show');
+            },
+            error: function () {
+                alert('Error testing string acceptance.');
+            }
+        });
+    }
+
+    // Function to minimize DFA
+    function minimizeDFA() {
+        $.ajax({
+            url: 'handlerFA.php',
+            type: 'POST',
+            data: $('#automata-form').serialize() + '&action=minimize',
+            success: function (response) {
+                $('#minimize-dfa-result').html(response);
+                $('#minimize-dfa-modal').modal('show');
+                // Display generated graph
+            },
+            error: function () {
+                alert('Error minimizing DFA.');
+            }
+        });
+    }
+
+});

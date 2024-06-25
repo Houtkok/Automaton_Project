@@ -220,7 +220,7 @@ class FiniteStateMachine
                 }
             }
             //set minimized start state
-            $minDFA->startState = $stateMap[$dfa->startState];
+            $minDFA->startState = $dfa->startState;
             //add minimized transition table
             foreach ($dfa->transitionTable as $oldState => $transitions) {
                 foreach ($transitions as $symbol => $nextState) {
