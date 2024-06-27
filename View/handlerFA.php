@@ -32,11 +32,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             $fa = new NonDeterministicFiniteAutomaton();
         }
-        // Set up FA properties
+
+        $new_finalstates = [];
+        foreach ($final_states as $item) {
+            if ($item !== "") {
+                $new_finalstates[] = $item;
+            }
+        }
         $fa->setStartState($start_state);
-        $fa->setFinalState($final_states);
+        $fa->setFinalState($new_finalstates);
         $fa->setAlphabet($symbols);
         $fa->setTransition($transition_table);
+        // Set up FA properties
         // Handle different actions based on form submission
         $action = isset($_POST['action']) ? $_POST['action'] : '';
 
@@ -47,20 +54,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 } else {
                     $result = "This FA is a NFA";
                 }
-                $graph = new Graph($name, $symbols, $start_state, $final_states, $transition_table);
+                $graph = new Graph($name, $symbols, $start_state, $new_finalstates, $transition_table);
 
                 $fullPath = $fsm->generateGraph($graph);
                 $fullPath = str_replace('\\', '/', $fullPath);
                 $basePath = str_replace('\\', '/', 'C:/xampp/htdocs');
                 $relativePath = str_replace($basePath, '', $fullPath);
-                echo '<img src="' . $relativePath . '" alt="FA graph">';
+                echo '<img src="' . $relativePath . '" alt="FA graph" style="width:40% ; height: 40%;">';
                 echo '<br>';
                 echo $result;
                 break;
             case 'convert_nfa':
+                $graph = new Graph($name, $symbols, $start_state, $new_finalstates, $transition_table);
+
+                $fullPath = $fsm->generateGraph($graph);
+                $fullPath = str_replace('\\', '/', $fullPath);
+                $basePath = str_replace('\\', '/', 'C:/xampp/htdocs');
+                $relativePath = str_replace($basePath, '', $fullPath);
+                echo '<img src="' . $relativePath . '" alt="FA graph" style="width:40% ; height: 40%;">';
                 if (!$fsm->isDFA()) {
                     $result = $fsm->nfaToDfa($fa);
                     if ($result) {
+                        echo'TO';
                         $result_transition = $result->transitionTable;
                         $result_alphabet = $result->alphabet;
                         $result_start = $result->startState;
@@ -71,8 +86,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $fullPath = str_replace('\\', '/', $fullPath);
                         $basePath = str_replace('\\', '/', 'C:/xampp/htdocs');
                         $relativePath = str_replace($basePath, '', $fullPath);
-                        echo '<img src="' . $relativePath . '" alt="FA graph">';
-                    }
+                        echo '<img src="' . $relativePath . '" alt="FA graph" style="width:40% ; height: 40%;">';                    }
                 } else {
                     echo " The FA is Already a DFA";
                 }
@@ -80,9 +94,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             case 'test_string':
                 $input_string = isset($_POST['test_string_input']) ? $_POST['test_string_input'] : '';
                 $result = $fsm->isAccepted($input_string) ? "Accepted" : "Not Accepted";
+                $graph = new Graph($name, $symbols, $start_state, $new_finalstates, $transition_table);
+
+                $fullPath = $fsm->generateGraph($graph);
+                $fullPath = str_replace('\\', '/', $fullPath);
+                $basePath = str_replace('\\', '/', 'C:/xampp/htdocs');
+                $relativePath = str_replace($basePath, '', $fullPath);
+                echo '<img src="' . $relativePath . '" alt="FA graph" style="width:40% ; height: 40%;">';
+                echo '<br>';
                 echo 'The string ' . "'" . $input_string . "'" . ' is ' . $result . 'by the FA';
                 break;
             case 'minimize':
+                $graph = new Graph($name, $symbols, $start_state, $new_finalstates, $transition_table);
+
+                $fullPath = $fsm->generateGraph($graph);
+                $fullPath = str_replace('\\', '/', $fullPath);
+                $basePath = str_replace('\\', '/', 'C:/xampp/htdocs');
+                $relativePath = str_replace($basePath, '', $fullPath);
+                echo '<img src="' . $relativePath . '" alt="FA graph" style="width:40% ; height: 40%;">';
+                echo '<br>';
                 if ($fsm->isDFA()) {
                     $converted_transition_table = [];
                     foreach ($transition_table as $state => $transitions) {
@@ -92,7 +122,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     }
                     $fa->setTransition($converted_transition_table);
                     $result = $fsm->minimizeDFA($fa);
-                    if ($result && $result->transitionTable!==$converted_transition_table) {
+                    if ($result && $result->transitionTable !== $converted_transition_table) {
                         $result_transition = $result->transitionTable;
                         $result_alphabet = $result->alphabet;
                         $result_start = $result->startState;
@@ -103,14 +133,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $fullPath = str_replace('\\', '/', $fullPath);
                         $basePath = str_replace('\\', '/', 'C:/xampp/htdocs');
                         $relativePath = str_replace($basePath, '', $fullPath);
-                        echo '<img src="' . $relativePath . '" alt="FA graph">';
-                    }
-                    else{
+                        echo '<img src="' . $relativePath . '" alt="FA graph" style="width:40% ; height: 40%;">';                    } else {
                         $result = "Look like the DFA is minimized";
                         echo $result;
                     }
                 } else {
-                    $result = "Can not minimize a NFA, Convert to DFA first!";
+                    $result = "Can not minimize a NFA!";
                     echo $result;
                 }
                 break;

@@ -240,16 +240,19 @@ class FiniteStateMachine
             $dot .= "    node [shape = point]; start;\n";
             $dot .= "    start -> \"$graph->startState\";\n";
             $dot .= "    node [shape = circle];\n";
-
+            // Define start state color
+            $dot .= "\"$graph->startState\" [label=<<font color=\"black\">$graph->startState</font>>, shape = circle, style = filled, color=black, fillcolor=green, fontcolor=black];\n";
             // Track transitions already added to avoid duplicates
             $addedTransitions = [];
 
             foreach ($graph->transitionTable as $state => $actions) {
-                // Define node shapes based on final or non-final state
-                if (in_array($state, $graph->finalStates)) {
-                    $dot .= "    \"$state\" [shape = doublecircle];\n";
-                } else {
-                    $dot .= "    \"$state\" [shape = circle];\n";
+                foreach ($graph->finalStates as $finalstate) {
+                    $dot .= "\"$finalstate\" [label=<<font color=\"black\">$finalstate</font>>, shape = doublecircle, style = filled, color=black, fillcolor=red, fontcolor=black];\n";
+                    if ($state == $finalstate) {
+                        $dot .= "\"$state\" [label=<<font color=\"black\">$state</font>>, shape = doublecircle, style = filled, color=black, fillcolor=red, fontcolor=black];\n";
+                    } else {
+                        $dot .= "    \"$state\" [shape = circle];\n";
+                    }
                 }
 
                 // Add transitions for each action
