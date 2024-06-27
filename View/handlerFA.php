@@ -11,79 +11,120 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $start_state = $_POST["start-state"];
     $final_states = $_POST["final-states"];
     $transition_table = [];
-
     // Example processing with basic validation
-    if (!empty($states) && !empty($symbols) && !empty($start_state)) {
-        // Process the form data as needed
-        //echo "Name: " . $name . ", States: " . implode(',', $states) . ", Symbols: " . implode(',', $symbols) . ", Start State: $start_state, Final States: " . implode(',', $final_states);
+    if (!empty($name) && !empty($states) && !empty($symbols) && !empty($start_state)) {
 
-        // Proceed with further processing, e.g., constructing automaton, etc.
-    } else {
-        // Handle case where required fields are not filled
-        echo "Please fill out all required fields.";
-    }
-
-    foreach ($states as $state) {
-        foreach ($symbols as $symbol) {
-            $transition_value = "transition_{$state}_{$symbol}";
-            if (isset($_POST[$transition_value])) {
-                // Ensure we handle multiple values correctly
-                $transition_table[$state][$symbol] = $_POST[$transition_value];
+        foreach ($states as $state) {
+            foreach ($symbols as $symbol) {
+                $transition_value = "transition_{$state}_{$symbol}";
+                if (isset($_POST[$transition_value])) {
+                    // Ensure we handle multiple values correctly
+                    $transition_table[$state][$symbol] = $_POST[$transition_value];
+                }
             }
         }
-    }
+        // Create FiniteStateMachine instance
+        $fsm = new FiniteStateMachine($symbols, $start_state, $final_states, $transition_table);
 
-    // Create FiniteStateMachine instance
-    $fsm = new FiniteStateMachine($symbols, $start_state, $final_states, $transition_table);
+        // Determine if DFA or NFA
+        if ($fsm->isDFA()) {
+            $fa = new DeterministicFiniteAutomaton();
+        } else {
+            $fa = new NonDeterministicFiniteAutomaton();
+        }
+        // Set up FA properties
+        $fa->setStartState($start_state);
+        $fa->setFinalState($final_states);
+        $fa->setAlphabet($symbols);
+        $fa->setTransition($transition_table);
+        // Handle different actions based on form submission
+        $action = isset($_POST['action']) ? $_POST['action'] : '';
 
-    // Determine if DFA or NFA
-    if ($fsm->isDFA()) {
-        $fa = new DeterministicFiniteAutomaton();
+        switch ($action) {
+            case 'test_deterministic':
+                if ($fsm->isDFA()) {
+                    $result = "This FA is a DFA";
+                } else {
+                    $result = "This FA is a NFA";
+                }
+                $graph = new Graph($name, $symbols, $start_state, $final_states, $transition_table);
+
+                $fullPath = $fsm->generateGraph($graph);
+                $fullPath = str_replace('\\', '/', $fullPath);
+                $basePath = str_replace('\\', '/', 'C:/xampp/htdocs');
+                $relativePath = str_replace($basePath, '', $fullPath);
+                echo '<img src="' . $relativePath . '" alt="FA graph">';
+                echo '<br>';
+                echo $result;
+                break;
+            case 'convert_nfa':
+                if (!$fsm->isDFA()) {
+                    $result = $fsm->nfaToDfa($fa);
+                    if ($result) {
+                        $result_transition = $result->transitionTable;
+                        $result_alphabet = $result->alphabet;
+                        $result_start = $result->startState;
+                        $result_final = $result->finalStates;
+                        $graph = new Graph($name . 'dfa', $result_alphabet, $result_start, $result_final, $result_transition);
+
+                        $fullPath = $fsm->generateGraph($graph);
+                        $fullPath = str_replace('\\', '/', $fullPath);
+                        $basePath = str_replace('\\', '/', 'C:/xampp/htdocs');
+                        $relativePath = str_replace($basePath, '', $fullPath);
+                        echo '<img src="' . $relativePath . '" alt="FA graph">';
+                    }
+                } else {
+                    echo " The FA is Already a DFA";
+                }
+                break;
+            case 'test_string':
+                $input_string = isset($_POST['test_string_input']) ? $_POST['test_string_input'] : '';
+                $result = $fsm->isAccepted($input_string) ? "Accepted" : "Not Accepted";
+                echo 'The string ' . "'" . $input_string . "'" . ' is ' . $result . 'by the FA';
+                break;
+            case 'minimize':
+                if ($fsm->isDFA()) {
+                    $converted_transition_table = [];
+                    foreach ($transition_table as $state => $transitions) {
+                        foreach ($transitions as $symbol => $nextStates) {
+                            $converted_transition_table[$state][$symbol] = $nextStates[0];
+                        }
+                    }
+                    $fa->setTransition($converted_transition_table);
+                    $result = $fsm->minimizeDFA($fa);
+                    if ($result && $result->transitionTable!==$converted_transition_table) {
+                        $result_transition = $result->transitionTable;
+                        $result_alphabet = $result->alphabet;
+                        $result_start = $result->startState;
+                        $result_final = $result->finalStates;
+                        $graph = new Graph($name . 'dfa', $result_alphabet, $result_start, $result_final, $result_transition);
+
+                        $fullPath = $fsm->generateGraph($graph);
+                        $fullPath = str_replace('\\', '/', $fullPath);
+                        $basePath = str_replace('\\', '/', 'C:/xampp/htdocs');
+                        $relativePath = str_replace($basePath, '', $fullPath);
+                        echo '<img src="' . $relativePath . '" alt="FA graph">';
+                    }
+                    else{
+                        $result = "Look like the DFA is minimized";
+                        echo $result;
+                    }
+                } else {
+                    $result = "Can not minimize a NFA, Convert to DFA first!";
+                    echo $result;
+                }
+                break;
+            default:
+                $result = "No action specified.";
+                break;
+        }
+
     } else {
-        $fa = new NonDeterministicFiniteAutomaton();
+        // Handle case where form is not submitted
+        echo "Form submission method not supported.";
     }
-
-    // Set up FA properties
-    $fa->setStartState($start_state);
-    $fa->setFinalState($final_states);
-    $fa->setAlphabet($symbols);
-    $fa->setTransition($transition_table);
-
-    if(isset($_POST['submit']))
-    {
-    }
-    // Handle different actions based on form submission
-    $action = isset($_POST['action']) ? $_POST['action'] : '';
-
-    switch ($action) {
-        case 'test_deterministic':
-            if ($fsm->isDFA()) {
-                $result = "This FA is a DFA";
-            } else
-                $result = "This FA is a NFA";
-            break;
-        case 'convert_nfa':
-            $result = !$fsm->isDFA() ? $fsm->nfaToDfa($fa) : "FA already a DFA";
-            break;
-        case 'test_string':
-            $input_string = isset($_POST['test_string_input']) ? $_POST['test_string_input'] : '';
-            $result = $fsm->isAccepted($input_string) ? "Accepted" : "Not Accepted";
-            break;
-        case 'minimize':
-            $result = $fsm->isDFA() ? $fsm->minimizeDFA($fa) : "This is not a DFA, cannot be minimized.";
-            break;
-        default:
-            $result = "No action specified.";
-            break;
-    }
-
-    // Output result
-    //echo $result;
-    print_r($result);
 
 } else {
-    // Handle case where form is not submitted
-    echo "Form submission method not supported.";
+    echo "Please fill out all required fields.";
 }
-
 ?>

@@ -21,15 +21,18 @@
                     <section class="main-input">
                         <div class="form-group">
                             <label for="graph-name">Name</label>
-                            <input type="text" class="form-control" name="graph-name" id="graph-name" placeholder="Enter FA name">
+                            <input type="text" class="form-control" name="graph-name" id="graph-name"
+                                placeholder="Enter FA name">
                         </div>
                         <div class="form-group">
                             <label for="states">States</label>
-                            <input type="text" class="form-control" name="states" id="states" placeholder="Enter states (Separated by ,)">
+                            <input type="text" class="form-control" name="states" id="states"
+                                placeholder="Enter states (Separated by ,)">
                         </div>
                         <div class="form-group">
                             <label for="symbols">Symbols</label>
-                            <input type="text" class="form-control" name="symbols" id="symbols" placeholder="Enter symbols (Separated by ,)">
+                            <input type="text" class="form-control" name="symbols" id="symbols"
+                                placeholder="Enter symbols (Separated by ,)">
                         </div>
                         <div class="form-group">
                             <label for="start-state">Start State</label>
@@ -39,7 +42,7 @@
                         </div>
                         <div class="form-group">
                             <label for="final-states">Final States</label>
-                            <select class="form-control" id="final-states" name="final-states[]" >
+                            <select class="form-control" id="final-states" name="final-states[]">
                                 <!-- Options will be populated dynamically -->
                             </select>
                             <br>
@@ -48,9 +51,8 @@
                             </div>
                         </div>
                     </section>
-                    <label for="confim" style ="color: red;">please confirm before using feature</label><br>
+                    <label style="color: red;">please confirm before using feature</label><br>
                     <button type="submit" class="btn btn-secondary" name="submit">confirm</button>
-                </form>
             </div>
             <div class="col-6">
                 <h3>Transition Table</h3>
@@ -122,6 +124,7 @@
                 </div>
             </div>
         </section>
+        </form>
 
         <!-- Modals -->
         <div class="modal fade" id="test-deterministic-modal" tabindex="-1" role="dialog"
@@ -129,7 +132,8 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="test-deterministic-modal-label">Test Deterministic Finite Automaton (DFA)</h5>
+                        <h5 class="modal-title" id="test-deterministic-modal-label">Test Deterministic Finite Automaton
+                            (DFA)</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -145,10 +149,10 @@
         </div>
 
         <!-- Modal for NFA to DFA conversion -->
-        <div class="modal fade" id="nfa-to-dfa-modal" tabindex="-1" role="dialog" aria-labelledby="nfa-to-dfa-modal-label"
-            aria-hidden="true">
+        <div class="modal fade" id="nfa-to-dfa-modal" tabindex="-1" role="dialog"
+            aria-labelledby="nfa-to-dfa-modal-label" aria-hidden="true">
             <div class="modal-dialog" role="document">
-                <div class="modal-content">
+                <div class="modal-content" style="height: 100%;">
                     <div class="modal-header">
                         <h5 class="modal-title" id="nfa-to-dfa-modal-label">Convert NFA to DFA</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -164,9 +168,10 @@
                 </div>
             </div>
         </div>
+
         <!-- Modal for Test accepted string -->
-        <div class="modal fade" id="test-string-modal" tabindex="-1" role="dialog" aria-labelledby="test-string-modal-label"
-            aria-hidden="true">
+        <div class="modal fade" id="test-string-modal" tabindex="-1" role="dialog"
+            aria-labelledby="test-string-modal-label" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -185,8 +190,8 @@
             </div>
         </div>
         <!-- Modal for minimize DFA conversion -->
-        <div class="modal fade" id="minimize-dfa-modal" tabindex="-1" role="dialog" aria-labelledby="minimize-dfa-modal-label"
-            aria-hidden="true">
+        <div class="modal fade" id="minimize-dfa-modal" tabindex="-1" role="dialog"
+            aria-labelledby="minimize-dfa-modal-label" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">

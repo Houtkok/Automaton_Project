@@ -9,7 +9,8 @@ class FiniteStateMachine
     private $startState;
     private $finalStates;
 
-    public function __construct($alphabet, $startState, $finalStates, $transitions) {
+    public function __construct($alphabet, $startState, $finalStates, $transitions)
+    {
         $this->alphabet = $alphabet;
         $this->startState = $startState;
         $this->finalStates = $finalStates;
@@ -18,7 +19,7 @@ class FiniteStateMachine
     //check if FA is DFA or NFA 
     public function isDFA()
     {
-        try{
+        try {
             foreach ($this->transitions as $transitionsForState) {
                 foreach ($this->alphabet as $input) {
                     if (!isset($transitionsForState[$input]) || count($transitionsForState[$input]) != 1) {
@@ -28,16 +29,15 @@ class FiniteStateMachine
             }
             return true;
             //implement this base on DFA : one current_state and input can only lead to one next_state 
-        }
-        catch(Exception $e){
-            throw new Exception("Error DFA mathod: ".$e->getMessage());
+        } catch (Exception $e) {
+            throw new Exception("Error DFA mathod: " . $e->getMessage());
         }
     }
 
     // check if a string a is accepted or not 
     public function isAccepted($input)
-    {   
-        try{
+    {
+        try {
             //if dfa get check if accepted by dfa
             if ($this->isDFA()) {
                 return $this->isAcceptedByDFA($input);
@@ -46,8 +46,7 @@ class FiniteStateMachine
             else {
                 return $this->isAcceptedByNFA($input);
             }
-        }
-        catch(Exception $e){
+        } catch (Exception $e) {
             throw new Exception("Error in isAccepted method: " . $e->getMessage());
         }
     }
@@ -55,7 +54,7 @@ class FiniteStateMachine
     //check if accepted by dfa
     private function isAcceptedByDFA($input)
     {
-        try{
+        try {
             $currentState = $this->startState;
 
             foreach (str_split($input) as $symbol) {
@@ -65,8 +64,7 @@ class FiniteStateMachine
                 $currentState = $this->transitions[$currentState][$symbol][0]; // Move to the next state
             }
             return in_array($currentState, $this->finalStates);
-        }
-        catch(Exception $e){
+        } catch (Exception $e) {
             throw new Exception("Error in isAccepted method: " . $e->getMessage());
         }
     }
@@ -74,7 +72,7 @@ class FiniteStateMachine
     //check if accepted by NFA
     private function isAcceptedByNFA($input)
     {
-        try{
+        try {
             $currentStates = [$this->startState];
 
             foreach (str_split($input) as $symbol) {
@@ -94,15 +92,14 @@ class FiniteStateMachine
             }
 
             return false;
-        }
-        catch(Exception $e){
+        } catch (Exception $e) {
             throw new Exception("Error in isAccepted method: " . $e->getMessage());
         }
     }
     public function nfaToDfa(NonDeterministicFiniteAutomaton $nfa)
     {
-        try{
-            if ($this->isDFA()) {
+        try {
+            if (!$this->isDFA()) {
                 //Intialize DFA
                 $dfa = new DeterministicFiniteAutomaton();
                 $dfa->startState = $nfa->startState;
@@ -152,15 +149,14 @@ class FiniteStateMachine
                 return $dfa;
             } else
                 echo "The FA is aleady a DFA";
-            }
-            catch(Exception $e){
-                throw new Exception("Error in isAccepted method: " . $e->getMessage());
-            }
+        } catch (Exception $e) {
+            throw new Exception("Error in isAccepted method: " . $e->getMessage());
+        }
     }
     //minize by using Hopcroft algo
     public function minimizeDFA(DeterministicFiniteAutomaton $dfa)
     {
-        try{
+        try {
             //Initialize Partition P = F, Q \ F. 
             //F final state, array_key(...) = Q set of all transition, Array_diff(Q) = set are not final
             $P = [$dfa->finalStates, array_diff(array_keys($dfa->transitionTable), $dfa->finalStates)];
@@ -220,7 +216,7 @@ class FiniteStateMachine
                 }
             }
             //set minimized start state
-            $minDFA->startState = $dfa->startState;
+            $minDFA->startState = $stateMap[$dfa->startState];
             //add minimized transition table
             foreach ($dfa->transitionTable as $oldState => $transitions) {
                 foreach ($transitions as $symbol => $nextState) {
@@ -229,15 +225,14 @@ class FiniteStateMachine
             }
 
             return $minDFA;
-        }
-        catch(Exception $e){
+        } catch (Exception $e) {
             throw new Exception("Error in isAccepted method: " . $e->getMessage());
         }
     }
     //for generating graph
     private function transitionsToDot(Graph $graph)
-    {   
-        try{
+    {
+        try {
             $dot = "digraph G {\n";
             $dot .= "    rankdir=LR;\n";
 
@@ -245,6 +240,9 @@ class FiniteStateMachine
             $dot .= "    node [shape = point]; start;\n";
             $dot .= "    start -> \"$graph->startState\";\n";
             $dot .= "    node [shape = circle];\n";
+
+            // Track transitions already added to avoid duplicates
+            $addedTransitions = [];
 
             foreach ($graph->transitionTable as $state => $actions) {
                 // Define node shapes based on final or non-final state
@@ -256,24 +254,33 @@ class FiniteStateMachine
 
                 // Add transitions for each action
                 foreach ($actions as $action => $next_states) {
-                    foreach ($next_states as $next_state) {
-                        $dot .= "    \"$state\" -> \"$next_state\" [label=\"$action\"];\n";
+                    // Ensure $next_states is always an array
+                    $nextStatesArray = is_array($next_states) ? $next_states : [$next_states];
+
+                    foreach ($nextStatesArray as $next_state) {
+                        // Format the action and next_state for uniqueness
+                        $transitionKey = "$state-$action-$next_state";
+
+                        // Add the transition if it hasn't been added already
+                        if (!isset($addedTransitions[$transitionKey])) {
+                            $dot .= "    \"$state\" -> \"$next_state\" [label=\"$action\"];\n";
+                            $addedTransitions[$transitionKey] = true;
+                        }
                     }
                 }
             }
 
             $dot .= "}";
             return $dot;
-        }
-        catch(Exception $e){
-            throw new Exception("Error in isAccepted method: " . $e->getMessage());
+        } catch (Exception $e) {
+            throw new Exception("Error in transitionsToDot method: " . $e->getMessage());
         }
     }
 
     // Method to render the DOT representation as a PNG using Graphviz
     private function renderGraph($dotString, $outputFile)
-    {   
-        try{
+    {
+        try {
             // Ensure directory exists for output file
             $outputDir = dirname($outputFile);
             if (!file_exists($outputDir)) {
@@ -292,21 +299,19 @@ class FiniteStateMachine
             unlink($tempDotFile);
 
             return $outputFile;
-        }
-        catch(Exception $e){
+        } catch (Exception $e) {
             throw new Exception("Error in isAccepted method: " . $e->getMessage());
         }
     }
 
     // Method to generate the graph and return the path to the generated PNG file
     public function generateGraph(Graph $graph)
-    {   
-        try{
+    {
+        try {
             $graphDot = $this->transitionsToDot($graph);
             $outputFile = __DIR__ . '/graphs/' . $graph->name . '.png';
             return $this->renderGraph($graphDot, $outputFile);
-        }
-        catch(Exception $e){
+        } catch (Exception $e) {
             throw new Exception("Error in isAccepted method: " . $e->getMessage());
         }
     }

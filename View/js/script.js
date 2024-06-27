@@ -1,8 +1,17 @@
 $(document).ready(function () {
-    // Event listeners for states and symbols input
-    $('#states, #symbols').on('input', function () {
-        updateTransitionTable();
-    });
+
+    // Debounce function to limit the frequency of update calls
+    function debounce(func, wait) {
+        let timeout;
+        return function () {
+            const context = this, args = arguments;
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(context, args), wait);
+        };
+    }
+
+    // Event listeners for states and symbols input with debounce
+    $('#states, #symbols').on('input', debounce(updateTransitionTable, 300));
 
     // Function to update transition table based on states and symbols input
     function updateTransitionTable() {
@@ -81,6 +90,9 @@ $(document).ready(function () {
     $('#automata-form').on('submit', function (event) {
         event.preventDefault();
 
+        // Clear previous hidden inputs
+        $(this).find('input[type="hidden"]').remove();
+
         // Collect final states from the container
         const finalStates = [];
         $('#selected-state .state').each(function () {
@@ -109,6 +121,24 @@ $(document).ready(function () {
         // Submit the form
         submitForm();
     });
+
+    // Define the submitForm function
+    function submitForm() {
+        $.ajax({
+            url: 'handlerFA.php',
+            type: 'POST',
+            data: $('#automata-form').serialize(),
+            success: function (response) {
+                // Handle success - for example, displaying a success message
+                alert('Form submitted successfully');
+                console.log(response);
+            },
+            error: function () {
+                // Handle error - for example, displaying an error message
+                alert('Error submitting form.');
+            }
+        });
+    }
 
     // Event listener for feature buttons
     $('.btn-feature').on('click', function () {
@@ -168,6 +198,7 @@ $(document).ready(function () {
     // Function to test string acceptance
     function testStringAcceptance() {
         const testString = $('#test-string-input').val();
+        
         if (!testString) {
             alert('Please enter a test string.');
             return;

@@ -7,12 +7,12 @@ class Graph
     public $transitionTable;
 
     public $name;
-    public function __construct($name,$alphabet, $startState, $finalStates, $transitions) {
+    public function __construct($name,$alphabet, $startState, $finalStates, $transitionTable) {
         $this->name=$name;
         $this->alphabet = $alphabet;
         $this->startState = $startState;
         $this->finalStates = $finalStates;
-        $this->transitions = $transitions;
+        $this->transitionTable = $transitionTable;
     }
 }
 ?>
