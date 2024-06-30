@@ -72,10 +72,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $basePath = str_replace('\\', '/', 'C:/xampp/htdocs');
                 $relativePath = str_replace($basePath, '', $fullPath);
                 echo '<img src="' . $relativePath . '" alt="FA graph" style="width:40% ; height: 40%;">';
+                // print_r($transition_table);
                 if (!$fsm->isDFA()) {
                     $result = $fsm->nfaToDfa($fa);
                     if ($result) {
-                        echo'TO';
+                        echo 'TO';
                         $result_transition = $result->transitionTable;
                         $result_alphabet = $result->alphabet;
                         $result_start = $result->startState;
@@ -86,7 +87,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $fullPath = str_replace('\\', '/', $fullPath);
                         $basePath = str_replace('\\', '/', 'C:/xampp/htdocs');
                         $relativePath = str_replace($basePath, '', $fullPath);
-                        echo '<img src="' . $relativePath . '" alt="FA graph" style="width:40% ; height: 40%;">';                    }
+                        echo '<img src="' . $relativePath . '" alt="FA graph" style="width:40% ; height: 40%;">';
+
+                        // print_r($result_transition);
+                    }
                 } else {
                     echo " The FA is Already a DFA";
                 }
@@ -114,6 +118,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo '<img src="' . $relativePath . '" alt="FA graph" style="width:40% ; height: 40%;">';
                 echo '<br>';
                 if ($fsm->isDFA()) {
+                    echo 'TO';
                     $converted_transition_table = [];
                     foreach ($transition_table as $state => $transitions) {
                         foreach ($transitions as $symbol => $nextStates) {
@@ -133,7 +138,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $fullPath = str_replace('\\', '/', $fullPath);
                         $basePath = str_replace('\\', '/', 'C:/xampp/htdocs');
                         $relativePath = str_replace($basePath, '', $fullPath);
-                        echo '<img src="' . $relativePath . '" alt="FA graph" style="width:40% ; height: 40%;">';                    } else {
+                        echo '<img src="' . $relativePath . '" alt="FA graph" style="width:40% ; height: 40%;">';
+                    } else {
                         $result = "Look like the DFA is minimized";
                         echo $result;
                     }

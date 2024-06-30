@@ -246,10 +246,10 @@ class FiniteStateMachine
             $addedTransitions = [];
 
             foreach ($graph->transitionTable as $state => $actions) {
-                foreach ($graph->finalStates as $finalstate) {
-                    $dot .= "\"$finalstate\" [label=<<font color=\"black\">$finalstate</font>>, shape = doublecircle, style = filled, color=black, fillcolor=red, fontcolor=black];\n";
-                    if ($state == $finalstate) {
-                        $dot .= "\"$state\" [label=<<font color=\"black\">$state</font>>, shape = doublecircle, style = filled, color=black, fillcolor=red, fontcolor=black];\n";
+                foreach ($graph->finalStates as $finalstates =>$final ) {
+                    $dot .= "\"$final\" [label=<<font color=\"black\">$final</font>>, shape = doublecircle, style = filled, color=black, fillcolor=red, fontcolor=black];\n";
+                    if ($state == $final) {
+                        //$dot .= "\"$state\" [label=<<font color=\"black\">$state</font>>, shape = doublecircle, style = filled, color=black, fillcolor=red, fontcolor=black];\n";
                     } else {
                         $dot .= "    \"$state\" [shape = circle];\n";
                     }
