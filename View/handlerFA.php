@@ -3,6 +3,8 @@
 require_once '../Controller/FiniteStateMachine.php';
 require_once '../Controller/DeterministicFiniteAutomaton.php';
 require_once '../Controller/NonDeterministicFiniteAutomaton.php';
+require_once '../Controller/databasehandler.php';
+require_once '../Controller/dbconfig.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST["graph-name"];
@@ -25,6 +27,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         // Create FiniteStateMachine instance
         $fsm = new FiniteStateMachine($symbols, $start_state, $final_states, $transition_table);
+
+        $dbh = new DatabaseHandler($dbh);
+
 
         // Determine if DFA or NFA
         if ($fsm->isDFA()) {
@@ -49,6 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         switch ($action) {
             case 'test_deterministic':
+                $dbh-> insertAutomata($name, $states, $symbols,$start_state,$final_states);
                 if ($fsm->isDFA()) {
                     $result = "This FA is a DFA";
                 } else {
