@@ -246,7 +246,7 @@ class FiniteStateMachine
             $addedTransitions = [];
 
             foreach ($graph->transitionTable as $state => $actions) {
-                foreach ($graph->finalStates as $finalstates =>$final ) {
+                foreach ($graph->finalStates as $finalstates => $final) {
                     $dot .= "\"$final\" [label=<<font color=\"black\">$final</font>>, shape = doublecircle, style = filled, color=black, fillcolor=red, fontcolor=black];\n";
                     if ($state == $final) {
                         //$dot .= "\"$state\" [label=<<font color=\"black\">$state</font>>, shape = doublecircle, style = filled, color=black, fillcolor=red, fontcolor=black];\n";
@@ -312,8 +312,11 @@ class FiniteStateMachine
     {
         try {
             $graphDot = $this->transitionsToDot($graph);
+            $baseDir = realpath($_SERVER['DOCUMENT_ROOT']);
             $outputFile = __DIR__ . '/graphs/' . $graph->name . '.png';
-            return $this->renderGraph($graphDot, $outputFile);
+            $relativePath = str_replace($baseDir, '', $outputFile);
+
+            return $this->renderGraph($graphDot, ltrim($relativePath, DIRECTORY_SEPARATOR));
         } catch (Exception $e) {
             throw new Exception("Error in isAccepted method: " . $e->getMessage());
         }

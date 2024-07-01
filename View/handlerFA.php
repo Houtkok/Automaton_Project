@@ -57,10 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $graph = new Graph($name, $symbols, $start_state, $new_finalstates, $transition_table);
 
                 $fullPath = $fsm->generateGraph($graph);
-                $fullPath = str_replace('\\', '/', $fullPath);
-                $basePath = str_replace('\\', '/', 'C:/xampp/htdocs');
-                $relativePath = str_replace($basePath, '', $fullPath);
-                echo '<img src="' . $relativePath . '" alt="FA graph" style="width:40% ; height: 40%;">';
+                echo '<img src="' . $fullPath . '" alt="FA graph" style="width:40% ; height: 40%;">';
                 echo '<br>';
                 echo $result;
                 break;
@@ -68,10 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $graph = new Graph($name, $symbols, $start_state, $new_finalstates, $transition_table);
 
                 $fullPath = $fsm->generateGraph($graph);
-                $fullPath = str_replace('\\', '/', $fullPath);
-                $basePath = str_replace('\\', '/', 'C:/xampp/htdocs');
-                $relativePath = str_replace($basePath, '', $fullPath);
-                echo '<img src="' . $relativePath . '" alt="FA graph" style="width:40% ; height: 40%;">';
+                echo '<img src="' . $fullPath . '" alt="FA graph" style="width:40% ; height: 40%;">';
                 // print_r($transition_table);
                 if (!$fsm->isDFA()) {
                     $result = $fsm->nfaToDfa($fa);
@@ -84,10 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $graph = new Graph($name . 'dfa', $result_alphabet, $result_start, $result_final, $result_transition);
 
                         $fullPath = $fsm->generateGraph($graph);
-                        $fullPath = str_replace('\\', '/', $fullPath);
-                        $basePath = str_replace('\\', '/', 'C:/xampp/htdocs');
-                        $relativePath = str_replace($basePath, '', $fullPath);
-                        echo '<img src="' . $relativePath . '" alt="FA graph" style="width:40% ; height: 40%;">';
+                        echo '<img src="' . $fullPath . '" alt="FA graph" style="width:40% ; height: 40%;">';
 
                         // print_r($result_transition);
                     }
@@ -101,10 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $graph = new Graph($name, $symbols, $start_state, $new_finalstates, $transition_table);
 
                 $fullPath = $fsm->generateGraph($graph);
-                $fullPath = str_replace('\\', '/', $fullPath);
-                $basePath = str_replace('\\', '/', 'C:/xampp/htdocs');
-                $relativePath = str_replace($basePath, '', $fullPath);
-                echo '<img src="' . $relativePath . '" alt="FA graph" style="width:40% ; height: 40%;">';
+                echo '<img src="' . $fullPath . '" alt="FA graph" style="width:40% ; height: 40%;">';
                 echo '<br>';
                 echo 'The string ' . "'" . $input_string . "'" . ' is ' . $result . 'by the FA';
                 break;
@@ -112,10 +100,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $graph = new Graph($name, $symbols, $start_state, $new_finalstates, $transition_table);
 
                 $fullPath = $fsm->generateGraph($graph);
-                $fullPath = str_replace('\\', '/', $fullPath);
-                $basePath = str_replace('\\', '/', 'C:/xampp/htdocs');
-                $relativePath = str_replace($basePath, '', $fullPath);
-                echo '<img src="' . $relativePath . '" alt="FA graph" style="width:40% ; height: 40%;">';
+                echo '<img src="' . $fullPath . '" alt="FA graph" style="width:40% ; height: 40%;">';
                 echo '<br>';
                 if ($fsm->isDFA()) {
                     echo 'TO';
@@ -135,10 +120,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $graph = new Graph($name . 'dfa', $result_alphabet, $result_start, $result_final, $result_transition);
 
                         $fullPath = $fsm->generateGraph($graph);
-                        $fullPath = str_replace('\\', '/', $fullPath);
-                        $basePath = str_replace('\\', '/', 'C:/xampp/htdocs');
-                        $relativePath = str_replace($basePath, '', $fullPath);
-                        echo '<img src="' . $relativePath . '" alt="FA graph" style="width:40% ; height: 40%;">';
+                        echo '<img src="' . $fullPath . '" alt="FA graph" style="width:40% ; height: 40%;">';
                     } else {
                         $result = "Look like the DFA is minimized";
                         echo $result;
