@@ -13,9 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $start_state = $_POST["start-state"];
     $final_states = $_POST["final-states"];
     $transition_table = [];
-    // Example processing with basic validation
-    if (!empty($name) && !empty($states) && !empty($symbols) && !empty($start_state)) {
-
+    print_r($_POST);
         foreach ($states as $state) {
             foreach ($symbols as $symbol) {
                 $transition_value = "transition_{$state}_{$symbol}";
@@ -54,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         switch ($action) {
             case 'test_deterministic':
-                $dbh-> insertAutomata($name, $states, $symbols,$start_state,$final_states);
+                $dbh-> insertAutomata($name, $states, $symbols,$start_state,$final_states,$transition_table);
                 if ($fsm->isDFA()) {
                     $result = "This FA is a DFA";
                 } else {
@@ -141,10 +139,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 break;
         }
 
-    } else {
-        // Handle case where form is not submitted
-        echo "Form submission method not supported.";
-    }
 
 } else {
     echo "Please fill out all required fields.";
