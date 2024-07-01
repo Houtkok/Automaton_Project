@@ -18,7 +18,7 @@ $fml = new FiniteStateMachine($symbols,$start_state,$final_states,$transition_ta
 
 // $result=$fml->minimizeDFA($dfa);
 
-// print_r($result);
+// print_r($result);q
 
 // $nfa = new NonDeterministicFiniteAutomaton();
 // $graph = new Graph();
