@@ -12,7 +12,7 @@ class DatabaseHandler {
         $finalStatesStr = json_encode($finalStates);
         $statesJson = json_encode($states);
         $symbolsJson = json_encode($symbols);
-        $transitionJson = json_encode($transition_table);
+        $transitionJson = serialize($transition_table);
 
         try {
             $sql = "INSERT INTO automata (StateName, State, Symbols, Start_State, Final_States, Transition) 
