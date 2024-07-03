@@ -3,6 +3,15 @@ require_once(__DIR__ . "/../Controller/dbconfig.php");
 require_once(__DIR__ . "/../Controller/DatabaseHandler.php");
 $db = new DatabaseHandler($dbh);
 $data = $db->read();
+function printNestedArray($array, $prefix = '') {
+    foreach ($array as $key => $value) {
+        if (is_array($value)) {
+            printNestedArray($value, $prefix . "[$key]");
+        } else {
+            echo "{$prefix}[$key] => $value<br>";
+        }
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -49,7 +58,6 @@ $data = $db->read();
             </thead>
             <tbody>
             <?php
-            // print_r($data);
                 foreach ($data as $dt) {
                     echo "<tr>";
                     echo "<td>  {$dt['id']}               </td>";
@@ -58,7 +66,15 @@ $data = $db->read();
                     echo "<td>  {$dt['Symbols']}        </td>";
                     echo "<td>  {$dt['Start_State']}              </td>";
                     echo "<td>  {$dt['Final_States']}         </td>";
-                    echo "<td>  {$dt['Transition']}          </td>";
+                    $unser = unserialize($dt['Transition']);
+                    echo "<td>";
+                    if (is_array($unser)) {
+                        printNestedArray($unser);
+                        var_dump($unser);
+                    } else {
+                        echo "Invalid transition data";
+                    }
+                    echo "</td>";
                     echo "<td>
                                 <a class='btn btn-info'     href=''>View</a>
                                 <a class='btn btn-danger'   href=''>Delete</a>
