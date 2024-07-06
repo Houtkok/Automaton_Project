@@ -12,7 +12,7 @@ class DatabaseHandler {
         $finalStatesStr = json_encode($finalStates);
         $statesJson = json_encode($states);
         $symbolsJson = json_encode($symbols);
-        $transitionJson = serialize($transition_table);
+        $transitionJson = json_encode($transition_table);
 
         try {
             $sql = "INSERT INTO automata (StateName, State, Symbols, Start_State, Final_States, Transition) 
@@ -35,6 +35,7 @@ class DatabaseHandler {
             throw new Exception("Error inserting record: " . $e->getMessage());
         }
     }
+    //read data from database to view 
     public function read(){
         try{
             $query = $this->dbh->prepare("SELECT * FROM `automata`");
@@ -44,6 +45,34 @@ class DatabaseHandler {
         }
         catch(PDOException $e){
             throw new Exception("Error ".$e->getMessage());
+        }
+    }
+    // use for print out transition for view
+    public function printNestedArray($array, $prefix = '') {
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                $this -> printNestedArray($value, $prefix . "[$key]");
+            } else {
+                echo "{$prefix}[$key] => $value<br>";
+            }
+        }
+    }
+    //function use for clear unnecessary 
+    public function cleanStr($string){
+        $result = preg_replace('/[^A-Za-z0-9,]/','',$string);
+        return $result;
+    }
+    //function for delect 
+    public function delete($id){
+        try{
+            $query = $this->dbh->prepare("DELETE FROM `automata` WHERE `id`=:id");
+            $query->bindParam(':id',$id);
+            $query->execute();
+            return true;
+        }
+        catch(PDOException $e){
+            echo "Error : " . $e -> getMessage();
+            return false;
         }
     }
 }

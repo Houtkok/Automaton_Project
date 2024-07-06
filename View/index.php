@@ -3,15 +3,6 @@ require_once(__DIR__ . "/../Controller/dbconfig.php");
 require_once(__DIR__ . "/../Controller/DatabaseHandler.php");
 $db = new DatabaseHandler($dbh);
 $data = $db->read();
-function printNestedArray($array, $prefix = '') {
-    foreach ($array as $key => $value) {
-        if (is_array($value)) {
-            printNestedArray($value, $prefix . "[$key]");
-        } else {
-            echo "{$prefix}[$key] => $value<br>";
-        }
-    }
-}
 ?>
 
 <!DOCTYPE html>
@@ -41,7 +32,7 @@ function printNestedArray($array, $prefix = '') {
     </style>
 </head>
 <body>
-    <button type="button" class="btn btn-success"><a href="index_database_crud.php">Create</a></button>
+    <button type="button" class="btn btn-success"><a href="homepage.php">Calculate</a></button>
     <div>
         <table class="table table-striped">
             <thead>
@@ -60,28 +51,28 @@ function printNestedArray($array, $prefix = '') {
             <?php
                 foreach ($data as $dt) {
                     echo "<tr>";
-                    echo "<td>  {$dt['id']}               </td>";
-                    echo "<td>  {$dt['StateName']}             </td>";
-                    echo "<td>  {$dt['State']}      </td>";
-                    echo "<td>  {$dt['Symbols']}        </td>";
-                    echo "<td>  {$dt['Start_State']}              </td>";
-                    echo "<td>  {$dt['Final_States']}         </td>";
-                    $unser = unserialize($dt['Transition']);
+                    echo "<td>"  .$dt['id']                            .      "</td>";
+                    echo "<td>"  .$db->cleanStr($dt['StateName'])      .      "</td>";
+                    echo "<td>"  .$db->cleanStr($dt['State'])          .      "</td>";
+                    echo "<td>"  .$db->cleanStr($dt['Symbols'])        .      "</td>";
+                    echo "<td>"  .$db->cleanStr($dt['Start_State'])    .      "</td>";
+                    echo "<td>"  .$db->cleanStr($dt['Final_States'])   .      "</td>";
+                    $unser = json_decode($dt['Transition'],true);
                     echo "<td>";
                     if (is_array($unser)) {
-                        printNestedArray($unser);
-                        var_dump($unser);
+                        $db->printNestedArray($unser);
                     } else {
                         echo "Invalid transition data";
                     }
                     echo "</td>";
                     echo "<td>
                                 <a class='btn btn-info'     href=''>View</a>
-                                <a class='btn btn-danger'   href=''>Delete</a>
+                                <a class='btn btn-danger'   href='handlerDelete.php?id=  {$dt['id']}'>Delete</a>
                     </td>";
                     echo "</tr>";
                 }
                 ?>
+                
             </tbody>
         </table>
     </div>

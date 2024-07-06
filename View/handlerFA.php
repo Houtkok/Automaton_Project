@@ -13,22 +13,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $start_state = $_POST["start-state"];
     $final_states = $_POST["final-states"];
     $transition_table = [];
-    // Iterate through each state and each symbol to build transition_table
+    // iterate through each state and each symbol to build transition_table
     foreach ($states as $state) {
         foreach ($symbols as $symbol) {
             // Construct the POST key for transition function
             $post_key = "transition_" . $state . "_" . $symbol;
-            
             // Check if the key exists in $_POST
             if (isset($_POST[$post_key])) {
-                // Get the transition destination states
                 $transition_destinations = $_POST[$post_key];
-                
-                // Add to transition_table
                 $transition_table[$state][$symbol] = $transition_destinations;
             } else {
-                // If no transition is defined, you may handle this case depending on your requirements
-                // For example, set to an empty array or handle it accordingly
                 $transition_table[$state][$symbol] = [];
             }
         }
@@ -36,6 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Create FiniteStateMachine instance
     $fsm = new FiniteStateMachine($symbols, $start_state, $final_states, $transition_table);
     $dbh = new DatabaseHandler($dbh);
+    
     // Determine if DFA or NFA
     if ($fsm->isDFA()) {
         $fa = new DeterministicFiniteAutomaton();
@@ -56,9 +51,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Handle different actions based on form submission
     $action = isset($_POST['action']) ? $_POST['action'] : '';
     switch ($action) {
+        case 'submit_insert':
+            $dbh->insertAutomata($name, $states, $symbols, $start_state, $new_finalstates, $transition_table);
+            echo "Automata data inserted successfully!";
+            break;
         case 'test_deterministic':
-            //Insert data to database
-            $dbh-> insertAutomata($name, $states, $symbols,$start_state,$final_states,$transition_table);
             if ($fsm->isDFA()) {
                 $result = "This FA is a DFA";
             } else {
@@ -137,8 +134,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $result = "No action specified.";
             break;
     }
-
-
 } else {
     echo "Please fill out all required fields.";
 }

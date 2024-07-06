@@ -14,6 +14,7 @@
     <header class="bg-#365679 p-2 d-flex justify-content-between align-items-center">
         <h3 style="color: white;">Automata</h3>
     </header>
+    <button type="button" class="btn btn-success"><a href="homepage.php">Back</a></button>
     <main class="container">
         <div class="row">
             <div class="col-6">
@@ -69,7 +70,7 @@
                 </section>
                 <p style="margin-left: 230px;"><b style="color: red;">Note</b>: Please confirm before using feature!</p>
                 <div style="display: flex; justify-content: right;">
-                    <button type="submit" class="btn btn-secondary" name="submit" style="background-color: #365679;" >confirm</button>
+                    <button type="submit" class="btn btn-secondary btn-feature" data-action="submit_insert" style="background-color: #365679;" >confirm</button>
                 </div>
             </div>
         </div>

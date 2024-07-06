@@ -85,7 +85,6 @@ $(document).ready(function () {
             });
         }
     }
-
     // Handle form submission
     $('#automata-form').on('submit', function (event) {
         event.preventDefault();
@@ -119,31 +118,16 @@ $(document).ready(function () {
         });
 
         // Submit the form
-        submitForm();
+        // submitForm();
     });
-
-    // Define the submitForm function
-    function submitForm() {
-        $.ajax({
-            url: 'handlerFA.php',
-            type: 'POST',
-            data: $('#automata-form').serialize(),
-            success: function (response) {
-                // Handle success - for example, displaying a success message
-                alert('Form submitted successfully');
-                console.log(response);
-            },
-            error: function () {
-                // Handle error - for example, displaying an error message
-                alert('Error submitting form.');
-            }
-        });
-    }
 
     // Event listener for feature buttons
     $('.btn-feature').on('click', function () {
         const action = $(this).data('action');
         switch (action) {
+            case 'submit_insert':
+                submitForm();
+                break;
             case 'test_deterministic':
                 testDeterministic();
                 break;
@@ -161,6 +145,24 @@ $(document).ready(function () {
                 break;
         }
     });
+
+    // Define the submitForm function
+    function submitForm() {
+        $.ajax({
+            url: 'handlerFA.php',
+            type: 'POST',
+            data: $('#automata-form').serialize() + '&action=submit_insert',
+            success: function (response) {
+                // Handle success - for example, displaying a success message
+                alert('Form submitted successfully');
+                console.log(response);
+            },
+            error: function () {
+                // Handle error - for example, displaying an error message
+                alert('Error submitting form.');
+            }
+        });
+    }
 
     // Function to test if FA is deterministic or non-deterministic
     function testDeterministic() {
