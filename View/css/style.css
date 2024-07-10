@@ -3,9 +3,16 @@ body {
     margin: 0;
     padding: 0;
 }
-header{
+
+header {
     background-color: #365679;
-}.state {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1030;
+}
+
+.state {
     display: inline-block;
     background-color: #f0f0f0;
     padding: 5px 10px;
@@ -23,13 +30,16 @@ header{
     color: red;
 }
 
-.main-input, .transitions, .features {
+.main-input,
+.transitions,
+.features {
     background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 5px;
     padding: 20px;
     margin: 10px 0;
 }
+
 .transition-select {
     width: 100%;
 }

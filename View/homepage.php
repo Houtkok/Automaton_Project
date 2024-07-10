@@ -13,8 +13,10 @@
 <body>
     <header class="bg-#365679 p-2 d-flex justify-content-between align-items-center">
         <h3 style="color: white;">Automata</h3>
+        <div style="display: flex; justify-content: right;">
+            <a href="index.php" class="btn btn-primary"><b>History</b></a>
+        </div>
     </header>
-    <button type="button" class="btn btn-success"><a href="homepage.php">Back</a></button>
     <main class="container">
         <div class="row">
             <div class="col-6">
@@ -70,7 +72,8 @@
                 </section>
                 <p style="margin-left: 230px;"><b style="color: red;">Note</b>: Please confirm before using feature!</p>
                 <div style="display: flex; justify-content: right;">
-                    <button type="submit" class="btn btn-secondary btn-feature" data-action="submit_insert" style="background-color: #365679;" >confirm</button>
+                    <button type="submit" class="btn btn-secondary btn-feature" data-action="submit_insert"
+                        style="background-color: #365679;">confirm</button>
                 </div>
             </div>
         </div>
@@ -131,7 +134,7 @@
 
         <!-- Modals -->
         <div class="modal fade" id="test-deterministic-modal" tabindex="-1" role="dialog"
-            aria-labelledby="test-deterministic-modal-label" aria-hidden="true" >
+            aria-labelledby="test-deterministic-modal-label" aria-hidden="true">
             <div class="modal-dialog" role="document" style="max-width: 80%; height: 80vh; margin: auto;">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -141,7 +144,8 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body" id="test-fa-result" style="display: flex; justify-content: center; align-items: center; height: 80vh;">
+                    <div class="modal-body" id="test-fa-result"
+                        style="display: flex; justify-content: center; align-items: center; height: 80vh;">
                         <!-- Result of deterministic test shown here -->
                     </div>
                     <div class="modal-footer">
@@ -153,7 +157,7 @@
 
         <!-- Modal for NFA to DFA conversion -->
         <div class="modal fade" id="nfa-to-dfa-modal" tabindex="-1" role="dialog"
-            aria-labelledby="nfa-to-dfa-modal-label" aria-hidden="true" >
+            aria-labelledby="nfa-to-dfa-modal-label" aria-hidden="true">
             <div class="modal-dialog" role="document" style="max-width: 80%; height: 80vh; margin: auto;">
                 <div class="modal-content" style="height: 100%;">
                     <div class="modal-header">
@@ -162,7 +166,8 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body" id="nfa-to-dfa-result" style="display: flex; justify-content: center; align-items: center; height: 80vh;">
+                    <div class="modal-body" id="nfa-to-dfa-result"
+                        style="display: flex; justify-content: center; align-items: center; height: 80vh;">
                         <!-- Result of NFA to DFA conversion shown here -->
                     </div>
                     <div class="modal-footer">
@@ -174,7 +179,7 @@
 
         <!-- Modal for Test accepted string -->
         <div class="modal fade" id="test-string-modal" tabindex="-1" role="dialog"
-            aria-labelledby="test-string-modal-label" aria-hidden="true" >
+            aria-labelledby="test-string-modal-label" aria-hidden="true">
             <div class="modal-dialog" role="document" style="max-width: 80%; height: 80vh; margin: auto;">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -183,7 +188,8 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body" id="test-string-result" style="display: flex; justify-content: center; align-items: center; height: 80vh;">
+                    <div class="modal-body" id="test-string-result"
+                        style="display: flex; justify-content: center; align-items: center; height: 80vh;">
                         <!-- Result of string acceptance test shown here -->
                     </div>
                     <div class="modal-footer">
@@ -194,7 +200,7 @@
         </div>
         <!-- Modal for minimize DFA conversion -->
         <div class="modal fade" id="minimize-dfa-modal" tabindex="-1" role="dialog"
-            aria-labelledby="minimize-dfa-modal-label" aria-hidden="true" >
+            aria-labelledby="minimize-dfa-modal-label" aria-hidden="true">
             <div class="modal-dialog" role="document" style="max-width: 80%; height: 80vh; margin: auto;">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -203,7 +209,8 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body" id="minimize-dfa-result" style="display: flex; justify-content: center; align-items: center; height: 80vh;">
+                    <div class="modal-body" id="minimize-dfa-result"
+                        style="display: flex; justify-content: center; align-items: center; height: 80vh;">
                         <!-- Result of DFA minimization shown here -->
                     </div>
                     <div class="modal-footer">

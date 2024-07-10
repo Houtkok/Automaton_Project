@@ -153,12 +153,10 @@ $(document).ready(function () {
             type: 'POST',
             data: $('#automata-form').serialize() + '&action=submit_insert',
             success: function (response) {
-                // Handle success - for example, displaying a success message
                 alert('Form submitted successfully');
                 console.log(response);
             },
             error: function () {
-                // Handle error - for example, displaying an error message
                 alert('Error submitting form.');
             }
         });
@@ -189,7 +187,6 @@ $(document).ready(function () {
             success: function (response) {
                 $('#nfa-to-dfa-result').html(response);
                 $('#nfa-to-dfa-modal').modal('show');
-                // Display generated graph
             },
             error: function () {
                 alert('Error converting NFA to DFA.');
@@ -219,7 +216,6 @@ $(document).ready(function () {
             }
         });
     }
-
     // Function to minimize DFA
     function minimizeDFA() {
         $.ajax({
