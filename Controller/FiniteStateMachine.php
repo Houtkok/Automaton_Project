@@ -104,7 +104,7 @@ class FiniteStateMachine
                 $dfa = new DeterministicFiniteAutomaton();
                 $dfa->startState = $nfa->startState;
                 $dfa->alphabet = $nfa->alphabet;
-                //create unmarked states group of NFA wrapped Array
+                //create unmarked states group of NFA wrapped Array is use to keep track of state groups of nfa that need to be proceed
                 $unmarkedStates = [[$nfa->startState]];
                 //emptry transion and final for dfa 
                 $dfa->transitionTable = [];
