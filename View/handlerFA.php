@@ -52,15 +52,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $action = isset($_POST['action']) ? $_POST['action'] : '';
     switch ($action) {
         case 'submit_insert':
-            $dbh->insertAutomata($name, $states, $symbols, $start_state, $new_finalstates, $transition_table);
+            print_r($dbh);
             echo "Automata data inserted successfully!";
             break;
-        case 'test_deterministic':
-            if ($fsm->isDFA()) {
-                $result = "This FA is a DFA";
-            } else {
-                $result = "This FA is a NFA";
-            }
+            case 'test_deterministic':
+                if ($fsm->isDFA()) {
+                    $result = "This FA is a DFA";
+                } else {
+                    $result = "This FA is a NFA";
+                }
+                $dbh->insertAutomata($name, $states, $symbols, $start_state, $new_finalstates, $transition_table);
             $graph = new Graph($name, $symbols, $start_state, $new_finalstates, $transition_table);
             $fullPath = $fsm->generateGraph($graph);
             echo '<img src="' . $fullPath . '" alt="FA graph" style="width:40% ; height: 40%;">';
@@ -103,6 +104,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $fullPath = $fsm->generateGraph($graph);
             echo '<img src="' . $fullPath . '" alt="FA graph" style="width:40% ; height: 40%;">';
             echo '<br>';
+
             if ($fsm->isDFA()) {
                 echo 'TO';
                 $converted_transition_table = [];
@@ -112,12 +114,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     }
                 }
                 $fa->setTransition($converted_transition_table);
-                $result = $fsm->minimizeDFA($fa);
-                if ($result && $result->transitionTable !== $converted_transition_table) {
-                    $result_transition = $result->transitionTable;
-                    $result_alphabet = $result->alphabet;
-                    $result_start = $result->startState;
-                    $result_final = $result->finalStates;
+                $minimizedDFA = $fsm->minimizeDFA($fa);
+
+                if ($minimizedDFA && $minimizedDFA->transitionTable !== $converted_transition_table) {
+                    $result_transition = $minimizedDFA->transitionTable;
+                    $result_alphabet = $minimizedDFA->alphabet;
+                    $result_start = $minimizedDFA->startState;
+                    $result_final = $minimizedDFA->finalStates;
                     $graph = new Graph($name . 'dfa', $result_alphabet, $result_start, $result_final, $result_transition);
                     $fullPath = $fsm->generateGraph($graph);
                     echo '<img src="' . $fullPath . '" alt="FA graph" style="width:40% ; height: 40%;">';
@@ -126,15 +129,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     echo $result;
                 }
             } else {
-                $result = "Can not minimize a NFA!";
-                echo $result;
+                // If the FA is an NFA, convert it to a DFA and then minimize it
+                $dfa = $fsm->nfaToDfa($fa);
+                $minimizedDFA = $fsm->minimizeDFA($dfa);
+
+                if ($minimizedDFA) {
+                    $result_transition = $minimizedDFA->transitionTable;
+                    $result_alphabet = $minimizedDFA->alphabet;
+                    $result_start = $minimizedDFA->startState;
+                    $result_final = $minimizedDFA->finalStates;
+                    $graph = new Graph($name . 'dfa', $result_alphabet, $result_start, $result_final, $result_transition);
+                    $fullPath = $fsm->generateGraph($graph);
+                    echo '<img src="' . $fullPath . '" alt="FA graph" style="width:40% ; height: 40%;">';
+                } else {
+                    $result = "Cannot minimize the DFA!";
+                    echo $result;
+                }
             }
             break;
-        default:
-            $result = "No action specified.";
-            break;
+            default:
+                $result = "No action specified.";
+                break;
     }
-} else {
-    echo "Please fill out all required fields.";
-}
+    } else {
+        echo "Please fill out all required fields.";
+    }
+
 ?>
